@@ -1,12 +1,14 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+
 
 
 public class Rice {
 
-    static int currEmptyPos = 0;
+    static int taskCounter = 0;
 
     public static void main(String[] args) {
-        Task[] list = new Task[100];
+        ArrayList<Task> list = new ArrayList<>();
 
         String message = "Hello! I'm Rice.\n"
                 + "What can I do for you?\n";
@@ -24,8 +26,8 @@ public class Rice {
           }
 
           if (userInput.equals("list")) {
-            for (int i = 0; i < currEmptyPos; i += 1) {
-              System.out.println(String.format("%d.%s", i + 1, list[i]));
+            for (int i = 0; i < taskCounter; i += 1) {
+              System.out.println(String.format("%d.%s", i + 1, list.get(i)));
             }
           } else if (userInput.split(" ")[0].equals("mark")) { //split string, userInput should be immutable so this is another copy
               if (userInput.split(" ").length < 2) { //task number is not passed
@@ -34,13 +36,13 @@ public class Rice {
 
               int taskNumber = Integer.parseInt(userInput.split(" ")[1]);
 
-              if (taskNumber > currEmptyPos) { //task number is out of range
+              if (taskNumber > taskCounter) { //task number is out of range
                 throw new RiceException("Invalid task number"); 
               }
 
-              list[taskNumber - 1].mark();
+              list.get(taskNumber - 1).mark();
               System.out.println("  Nice! I've marked this task as done:");
-              System.out.println("    " + list[taskNumber - 1].toString());
+              System.out.println("    " + list.get(taskNumber - 1).toString());
           } else if (userInput.split(" ")[0].equals("unmark")) {
 
               if (userInput.split(" ").length < 2) { //task number is not passed
@@ -49,22 +51,22 @@ public class Rice {
 
               int taskNumber = Integer.parseInt(userInput.split(" ")[1]);
 
-              if (taskNumber > currEmptyPos) { //task number is out of range
+              if (taskNumber > taskCounter) { //task number is out of range
                 throw new RiceException("Invalid task number"); 
               }
 
-              list[taskNumber - 1].unmark();
+              list.get(taskNumber - 1).unmark();
               System.out.println("  OK, I've marked this task as not done yet:");
-              System.out.println("    " + list[taskNumber - 1].toString());
+              System.out.println("    " + list.get(taskNumber - 1).toString());
           } else if (userInput.split(" ", 2)[0].equals("todo")) {
             if (userInput.split(" ", 2).length < 2) { //desc is empty
               throw new RiceException("OOPS!!! The decription of todo cannot be empty");
             }
             Todo task = new Todo(userInput.split(" ", 2)[1]);
-            list[currEmptyPos] = task;
-            currEmptyPos += 1;
+            list.add(task);
+            taskCounter += 1;
             System.out.println("Got it. I've added this task:\n" + task.toString());
-            System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
+            System.out.println(String.format("Now you have %d tasks in the list", taskCounter));
           } else if (userInput.split(" ")[0].equals("deadline")) {
 
             if (userInput.split(" ").length < 2) { //task is empty
@@ -82,10 +84,10 @@ public class Rice {
             String end = newString[1].split(" ", 2)[1]; 
 
             Deadline deadline = new Deadline(task, end);
-            list[currEmptyPos] = deadline;
-            currEmptyPos += 1;
+            list.add(deadline);
+            taskCounter += 1;
             System.out.println("Got it. I've added this task:\n" + deadline.toString());
-            System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
+            System.out.println(String.format("Now you have %d tasks in the list", taskCounter));
           } else if (userInput.split(" ")[0].equals("event")) {
 
             if (userInput.split(" ").length < 2) { //missing task
@@ -104,10 +106,25 @@ public class Rice {
             String to = newString[2].split(" ", 2)[1];
 
             Events event = new Events(task, from, to);
-            list[currEmptyPos] = event;
-            currEmptyPos += 1;
+            list.add(event);
+            taskCounter += 1;
             System.out.println("Got it. I've added this task:\n" + event.toString());
-            System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
+            System.out.println(String.format("Now you have %d tasks in the list", taskCounter));
+            } else if (userInput.split(" ")[0].equals("delete")) {
+
+              if(userInput.split(" ").length < 2) {
+                throw new RiceException("OOPS!!! task number cannot be empty");
+              }
+
+              int taskNumber = Integer.parseInt(userInput.split(" ",2)[1]);
+              if (taskNumber == 0 ||  taskNumber > taskCounter) {
+                throw new RiceException("OOPS!! Task number cannot exceed number of tasks in list");
+              }
+
+              Task removedTask = list.remove(taskNumber - 1);
+              taskCounter -= 1;
+              System.out.println("Noted. I've removed this task:\n" + " " + removedTask.toString());
+              System.out.println(String.format("Now you have %d tasks in the list.", taskCounter)); 
             } else { //catch all invalid Task objects
             throw new RiceException("OOPS!!! I'm sorry, but I don't know whaat that means :-(");
             }
