@@ -37,10 +37,43 @@ public class Rice {
               list[taskNumber - 1].unmark();
               System.out.println("  OK, I've marked this task as not done yet:");
               System.out.println("    " + list[taskNumber - 1].toString());
+          } else if (userInput.split(" ", 2)[0].equals("todo")) {
+            Todo task = new Todo(userInput.split(" ", 2)[1]);
+            list[currEmptyPos] = task;
+            currEmptyPos += 1;
+            System.out.println("Got it. I've added this task:\n" + task.toString());
+            System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
+          } else if (userInput.split(" ")[0].equals("deadline")) {
+            String[] newString = userInput.split(" ", 2)[1]
+                                          .split("/");
+
+            String task = newString[0];
+            String end = newString[1].split(" ", 2)[1]; 
+
+            Deadline deadline = new Deadline(task, end);
+            list[currEmptyPos] = deadline;
+            currEmptyPos += 1;
+            System.out.println("Got it. I've added this task:\n" + deadline.toString());
+            System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
+          } else if (userInput.split(" ")[0].equals("event")) {
+            String[] newString = userInput.split(" ",2)[1]
+                                          .split("/");
+
+            String task = newString[0];
+            String from = newString[1].split(" ", 2)[1];
+            String to = newString[2].split(" ", 2)[1];
+
+            Events event = new Events(task, from, to);
+            list[currEmptyPos] = event;
+            currEmptyPos += 1;
+            System.out.println("Got it. I've added this task:\n" + event.toString());
+            System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
+
           } else {
               list[currEmptyPos] = new Task(userInput);
               currEmptyPos += 1;
               System.out.println("  added: " + userInput);
+              System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
             }
         }
     }
