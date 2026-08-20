@@ -14,8 +14,8 @@ public class Rice {
         System.out.println(message);
         
         Scanner scanner = new Scanner(System.in);
-
-        while (scanner.hasNextLine()) {
+        try {
+          while (scanner.hasNextLine()) {
           String userInput = scanner.nextLine();
 
           if (userInput.equals("bye")) {
@@ -28,22 +28,53 @@ public class Rice {
               System.out.println(String.format("%d.%s", i + 1, list[i]));
             }
           } else if (userInput.split(" ")[0].equals("mark")) { //split string, userInput should be immutable so this is another copy
+              if (userInput.split(" ").length < 2) { //task number is not passed
+                throw new RiceException("There is no task specified");
+              }
+
               int taskNumber = Integer.parseInt(userInput.split(" ")[1]);
+
+              if (taskNumber > currEmptyPos) { //task number is out of range
+                throw new RiceException("Invalid task number"); 
+              }
+
               list[taskNumber - 1].mark();
               System.out.println("  Nice! I've marked this task as done:");
               System.out.println("    " + list[taskNumber - 1].toString());
-          } else if (userInput.split(" ")[0].equals("unmark")) { 
+          } else if (userInput.split(" ")[0].equals("unmark")) {
+
+              if (userInput.split(" ").length < 2) { //task number is not passed
+                throw new RiceException("There is no task specified");
+              }
+
               int taskNumber = Integer.parseInt(userInput.split(" ")[1]);
+
+              if (taskNumber > currEmptyPos) { //task number is out of range
+                throw new RiceException("Invalid task number"); 
+              }
+
               list[taskNumber - 1].unmark();
               System.out.println("  OK, I've marked this task as not done yet:");
               System.out.println("    " + list[taskNumber - 1].toString());
           } else if (userInput.split(" ", 2)[0].equals("todo")) {
+            if (userInput.split(" ", 2).length < 2) { //desc is empty
+              throw new RiceException("OOPS!!! The decription of todo cannot be empty");
+            }
             Todo task = new Todo(userInput.split(" ", 2)[1]);
             list[currEmptyPos] = task;
             currEmptyPos += 1;
             System.out.println("Got it. I've added this task:\n" + task.toString());
             System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
           } else if (userInput.split(" ")[0].equals("deadline")) {
+
+            if (userInput.split(" ").length < 2) { //task is empty
+              throw new RiceException("OOPS!!! The decription of deadline cannot be empty");
+            }
+
+            if (userInput.split(" ", 2)[1].split("/").length < 2){ //missing deadline
+              throw new RiceException("OOPS! There are some empty parameters");
+            }
+
             String[] newString = userInput.split(" ", 2)[1]
                                           .split("/");
 
@@ -56,6 +87,15 @@ public class Rice {
             System.out.println("Got it. I've added this task:\n" + deadline.toString());
             System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
           } else if (userInput.split(" ")[0].equals("event")) {
+
+            if (userInput.split(" ").length < 2) { //missing task
+              throw new RiceException("OOPS!!! The decription of event cannot be empty");
+            }
+
+            if (userInput.split(" ",2)[1].split("/").length < 3) { //missing from or to 
+              throw new RiceException("OOPS!!! There are some empty parameters");
+            }
+
             String[] newString = userInput.split(" ",2)[1]
                                           .split("/");
 
@@ -68,13 +108,12 @@ public class Rice {
             currEmptyPos += 1;
             System.out.println("Got it. I've added this task:\n" + event.toString());
             System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
-
-          } else {
-              list[currEmptyPos] = new Task(userInput);
-              currEmptyPos += 1;
-              System.out.println("  added: " + userInput);
-              System.out.println(String.format("Now you have %d tasks in the list", currEmptyPos));
+            } else { //catch all invalid Task objects
+            throw new RiceException("OOPS!!! I'm sorry, but I don't know whaat that means :-(");
             }
+          }
+        } catch (RiceException e){
+          System.out.println(e.getMessage());
         }
     }
 }
