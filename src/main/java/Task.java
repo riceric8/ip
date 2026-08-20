@@ -15,6 +15,14 @@ public class Task {
     this.status = false;
   }
 
+  public String getTask() {
+    return this.task;
+  }
+
+  public boolean getStatus() {
+    return this.status;
+  }
+
   @Override
   public String toString() {
     String completion = "";
