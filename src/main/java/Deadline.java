@@ -2,12 +2,11 @@ import java.time.LocalDate;
 
 
 public class Deadline extends Task {
-
   private LocalDate deadline;
 
   public Deadline(String task, String deadline) {
     super(task);
-    this.deadline = DateParser.parseDate(deadline);
+    this.deadline = Parser.parseDate(deadline);
   }
 
   public String getDeadline() {
@@ -25,6 +24,6 @@ public class Deadline extends Task {
     }
 
     return "[D]" + completion + " " + super.getTask() + "(by: "
-            + DateParser.formatDate(this.deadline) + ")";
+            + Parser.formatDate(this.deadline) + ")";
   }
 }
