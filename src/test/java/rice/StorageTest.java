@@ -1,0 +1,39 @@
+//Written by Codex, Model: gpt-5.6-luna low
+package rice;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+/** Tests the text formatting performed when tasks are saved. */
+public class StorageTest {
+
+    @TempDir
+    Path temporaryDirectory;
+
+    @Test
+    void save_allTaskTypes_writesExpectedDelimitedRecords() throws Exception {
+        Storage storage = new Storage(temporaryDirectory.toString(), "tasks.txt");
+
+        Todo todo = new Todo("read book");
+
+        Deadline deadline = new Deadline("submit report", "2026-12-12");
+        deadline.mark();
+
+        Events event = new Events("team meeting", "2026-12-13", "2026-12-14");
+
+        storage.save(List.of(todo, deadline, event));
+
+        List<String> savedLines = Files.readAllLines(temporaryDirectory.resolve("tasks.txt"));
+
+        assertEquals(List.of(
+                "T|0|read book",
+                "D|1|submit report|2026-12-12",
+                "E|0|team meeting|2026-12-13|2026-12-14"), savedLines);
+    }
+}
