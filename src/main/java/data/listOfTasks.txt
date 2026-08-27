@@ -1,0 +1,10 @@
+D|1|homework |2026-12-12
+D|1|homework |2026-12-10
+D|1|homework |2025-09-10
+D|1|get tickets |2025-10-15
+E|0|do homework|2025-12-10|2025-11-10
+D|1|do homwork|2027-10-12
+D|0|homework|2025-10-26
+D|0|homework|2024-10-10
+D|0|homework|2025-10-12
+E|1|concert|2025-10-12|2025-10-14

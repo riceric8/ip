@@ -1,3 +1,5 @@
+package rice;
+
 public class Rice {
   private Parser parser = new Parser();
   private Storage storage = new Storage("data", "listOfTasks.txt");

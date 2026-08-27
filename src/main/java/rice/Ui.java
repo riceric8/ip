@@ -1,3 +1,4 @@
+package rice;
 import java.util.Scanner;
 
 public class Ui {

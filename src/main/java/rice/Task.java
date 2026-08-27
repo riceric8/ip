@@ -1,3 +1,4 @@
+package rice;
 public class Task {
 
   private String task;

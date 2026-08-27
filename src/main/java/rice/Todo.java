@@ -1,3 +1,4 @@
+package rice;
 public class Todo extends Task {
 
   public Todo(String task) {

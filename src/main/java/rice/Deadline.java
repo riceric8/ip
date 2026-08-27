@@ -1,3 +1,5 @@
+package rice;
+
 import java.time.LocalDate;
 
 
