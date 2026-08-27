@@ -1,20 +1,22 @@
+import java.time.LocalDate;
+
 public class Events extends Task {
 
-  private String start;
-  private String end;
+  private LocalDate start;
+  private LocalDate end;
 
   public Events(String task, String start, String end) {
     super(task);
-    this.start = start;
-    this.end = end;
+    this.start = DateParser.parseDate(start);
+    this.end = DateParser.parseDate(end);
   }
 
   public String getStart() {
-    return this.start;
+    return this.start.toString();
   }
 
   public String getEnd() {
-    return this.end;
+    return this.end.toString();
   }
 
   @Override
@@ -27,6 +29,8 @@ public class Events extends Task {
         completion = "[ ]";     
     }
 
-    return "[E]" + completion + " " + super.getTask() + "(form: " + this.start + " to: " +  this.end + ")";
+    return "[E]" + completion + " " + super.getTask() + "(from: "
+            + DateParser.formatDate(this.start) + " to: "
+            + DateParser.formatDate(this.end) + ")";
   }
 }
