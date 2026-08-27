@@ -40,7 +40,7 @@ public class Storage {
     }
   }
 
-  /** Converts one task into the delimiter-separated storage format. */
+  /*Converts one task into the delimiter-separated storage format. */
   private String taskToListString(Task task) {
     String completion = task.getStatus() ? "1" : "0";
 
