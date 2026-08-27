@@ -1,9 +1,6 @@
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 
 
@@ -24,15 +21,16 @@ public class Rice {
     }
 
     public static void main(String[] args) {
-        ArrayList<Task> list = new ArrayList<>();
-
+        List<Task> list = new ArrayList<>();
         Storage localList = new Storage("data", "listOfTasks.txt"); //specify relative path
-        
+        TaskParser taskParser = new TaskParser(); 
         String message = "Hello! I'm Rice.\n"
                 + "What can I do for you?\n";
 
         System.out.println(message);
-        localList.load();
+        List<String> legacyList = localList.load();
+        list = taskParser.parseTasks(legacyList);
+        taskCounter = list.size();
         
         Scanner scanner = new Scanner(System.in);
         try {
@@ -45,7 +43,7 @@ public class Rice {
 
           case bye -> {
             System.out.println("  Bye. Hope to see you again soon!");
-            break;
+            System.exit(0);
           }
 
           case list -> {
@@ -165,12 +163,8 @@ public class Rice {
               System.out.println(String.format("Now you have %d tasks in the list.", taskCounter)); 
               break;
               }
-            }
-            List<String> currList = new ArrayList<>();
-            for (int i = 0; i < taskCounter; i += 1) {
-              currList.add(String.format("%d.%s", i + 1, list.get(i)));
-            }
-            localList.save(currList);
+            } 
+            localList.save(list);
           }
         } catch (RiceException e){
           System.out.println(e.getMessage());
