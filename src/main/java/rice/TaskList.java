@@ -27,6 +27,20 @@ public class TaskList {
     taskList.addAll(tasks); 
   }
 
+  /** Returns tasks whose descriptions contain the keyword, ignoring case. */
+  public List<Task> find(String keyword) {
+    List<Task> matchingTasks = new ArrayList<>();
+    String searchTerm = keyword.toLowerCase();
+
+    for (Task task : taskList) {
+      if (task.getTask().toLowerCase().contains(searchTerm)) {
+        matchingTasks.add(task);
+      }
+    }
+
+    return matchingTasks;
+  }
+
   public void mark(int index) { 
     get(index).mark(); 
   }

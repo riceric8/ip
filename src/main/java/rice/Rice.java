@@ -16,6 +16,7 @@ public class Rice {
         String[] parts = input.split(" ", 2);
         switch (parts[0]) {
           case "list" -> showTasks();
+          case "find" -> findTasks(input);
           case "todo", "deadline", "event" -> addTask(input);
           case "mark", "unmark" -> changeStatus(parts[0], input);
           case "delete" -> deleteTask(input);
@@ -28,6 +29,23 @@ public class Rice {
   private void showTasks() {
     for (int i = 0; i < tasks.size(); i++) {
       ui.show((i + 1) + "." + tasks.get(i));
+    }
+  }
+
+  private void findTasks(String input) throws RiceException {
+    String[] parts = input.split(" ", 2);
+    if (parts.length < 2 || parts[1].isBlank()) {
+      throw new RiceException("Please provide a keyword to search for");
+    }
+
+    java.util.List<Task> matchingTasks = tasks.find(parts[1].trim());
+    if (matchingTasks.isEmpty()) {
+      ui.show("No matching tasks found.");
+      return;
+    }
+
+    for (Task task : matchingTasks) {
+      ui.show(task.toString());
     }
   }
   
