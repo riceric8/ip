@@ -9,6 +9,14 @@ public class Events extends Task {
     this.end = end;
   }
 
+  public String getStart() {
+    return this.start;
+  }
+
+  public String getEnd() {
+    return this.end;
+  }
+
   @Override
   public String toString(){ 
     String completion = "";
