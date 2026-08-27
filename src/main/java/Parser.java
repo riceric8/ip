@@ -1,13 +1,16 @@
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 /**
  * Converts the text representation of saved tasks into Task objects.
- *
+ * Converts and formatess 
  * expected form is class|status|*. A status of 1 means completed, while 0 means incomplete. *demarcates additional info attached to the 
  * respective task subclass
  */
-public class TaskParser {
+public class Parser {
 
   
     // Parses all saved task lines into newly created task objects. 
@@ -20,9 +23,9 @@ public class TaskParser {
                 tasks.add(task);
             }
         }
-
         return tasks;
     }
+
 
     //Parses one line and reconstructs the appropriate task subtype.
     private Task parseTask(String line) {
@@ -69,5 +72,22 @@ public class TaskParser {
             task.mark();
         }
         return task;
+    }
+
+    public LocalDate parseDate(String date) {
+      DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+
+      try {
+        LocalDate parsedDate = LocalDate.parse(date, inputFormat);
+        return parsedDate;
+      } catch (DateTimeParseException ignored) {
+        //Do nothing and ignore
+      }
+    throw new IllegalArgumentException("Invalid date. Use yyyy-MM-dd, for example 2026-12-12.");
+  }
+
+  // Converts a LocalDate into the format shown to the user.
+    public String formatDate(LocalDate date) {
+      return date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
     }
 }
