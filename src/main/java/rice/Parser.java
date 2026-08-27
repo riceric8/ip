@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class Parser {
+  /** Reconstructs task objects from saved delimiter-separated records. */
   public List<Task> parseTasks(List<String> lines) {
     List<Task> result = new ArrayList<>();
     for (String line : lines) {
@@ -32,6 +33,10 @@ public class Parser {
     return result;
   }
 
+ /**
+  *Parses an input string in the ascribed input format into a valid date
+  * @param {String} date - User input date
+  */
   public static LocalDate parseDate(String date) {
     try { 
       return LocalDate.parse(date.trim(), DateTimeFormatter.ofPattern("uuuu-MM-dd")); 
@@ -40,10 +45,12 @@ public class Parser {
     }
   }
 
+  /** Formats a date for displaying to the user. */
   public static String formatDate(LocalDate date) {
     return date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
   }
 
+  /** Creates a task from a complete user command. */
   public Task createTask(String input) throws RiceException {
     String[] parts = input.split(" ", 2);
     if (parts.length < 2 || parts[1].isBlank()) {
@@ -58,6 +65,7 @@ public class Parser {
     };
   }
 
+  /** Parses the description and date in a deadline command. */
   private Task createDeadline(String body) throws RiceException {
     String[] p = body.split("/", 2);
     if (p.length != 2 || !p[1].trim().startsWith("by ")) {
@@ -66,6 +74,7 @@ public class Parser {
     return new Deadline(p[0].trim(), p[1].trim().substring(3).trim());
   }
 
+  /** Parses the description and dates in an event command. */
   private Task createEvent(String body) throws RiceException {
     String[] p = body.split("/", 3);
     if (p.length != 3 || !p[1].trim().startsWith("from ") || !p[2].trim().startsWith("to ")) {

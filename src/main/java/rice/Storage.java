@@ -18,10 +18,12 @@ public class Storage {
     this.filePath = Paths.get(pathElements[0], java.util.Arrays.copyOfRange(pathElements, 1, pathElements.length));
   }
 
+  /** Returns the file used for persistent task storage. */
   public Path getPath(){
     return this.filePath;
   }
 
+  /** Saves the current tasks to disk, replacing the previous contents. */
   public void save(List<Task> currList){
     Path parentDir = this.filePath.getParent();
     try {
@@ -57,6 +59,7 @@ public class Storage {
   }
 
 
+  /** Loads saved task records, or returns an empty list if none exist. */
   public List<String> load(){
     try {
       if (Files.exists(this.filePath)) {
