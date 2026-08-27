@@ -28,6 +28,7 @@ public class Rice {
                 + "What can I do for you?\n";
 
         System.out.println(message);
+        System.out.println("Dates should be recorded in the format YYYY-MM-DD");
         List<String> legacyList = localList.load();
         list = taskParser.parseTasks(legacyList);
         taskCounter = list.size();
@@ -112,8 +113,8 @@ public class Rice {
             String[] newString = userInput.split(" ", 2)[1]
                                           .split("/");
 
-            String task = newString[0];
-            String end = newString[1].split(" ", 2)[1]; 
+            String task = newString[0].trim();
+            String end = newString[1].split(" ", 2)[1].trim();
 
             Deadline deadline = new Deadline(task, end);
             list.add(deadline);
@@ -135,9 +136,9 @@ public class Rice {
             String[] newString = userInput.split(" ",2)[1]
                                           .split("/");
 
-            String task = newString[0];
-            String from = newString[1].split(" ", 2)[1];
-            String to = newString[2].split(" ", 2)[1];
+            String task = newString[0].trim();
+            String from = newString[1].split(" ", 2)[1].trim();
+            String to = newString[2].split(" ", 2)[1].trim();
 
             Events event = new Events(task, from, to);
             list.add(event);
@@ -166,7 +167,7 @@ public class Rice {
             } 
             localList.save(list);
           }
-        } catch (RiceException e){
+        } catch (RiceException | IllegalArgumentException e){
           System.out.println(e.getMessage());
         }
     }
