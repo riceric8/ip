@@ -1,14 +1,13 @@
 import java.time.LocalDate;
 
 public class Events extends Task {
-
   private LocalDate start;
   private LocalDate end;
 
   public Events(String task, String start, String end) {
     super(task);
-    this.start = DateParser.parseDate(start);
-    this.end = DateParser.parseDate(end);
+    this.start = Parser.parseDate(start);
+    this.end = Parser.parseDate(end);
   }
 
   public String getStart() {
@@ -30,7 +29,7 @@ public class Events extends Task {
     }
 
     return "[E]" + completion + " " + super.getTask() + "(from: "
-            + DateParser.formatDate(this.start) + " to: "
-            + DateParser.formatDate(this.end) + ")";
+            + Parser.formatDate(this.start) + " to: "
+            + Parser.formatDate(this.end) + ")";
   }
 }
