@@ -32,8 +32,10 @@ public class Ui {
      * Displays a message to the user.
      *
      * @param message message to display
+     * @return the same message that was displayed
      */
-    public void show(String message) {
+    public String show(String message) {
         System.out.println(message);
+        return message;
     }
 }
