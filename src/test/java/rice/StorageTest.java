@@ -1,4 +1,3 @@
-//Written by Codex, Model: gpt-5.6-luna low
 package rice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

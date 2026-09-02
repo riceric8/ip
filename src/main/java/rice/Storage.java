@@ -1,77 +1,91 @@
 package rice;
+
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import java.nio.file.StandardOpenOption;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-/*
-Handles all disk writing of edited List from RiceBot
-*/
-
+/**
+ * Handles loading tasks from and saving tasks to disk.
+ */
 public class Storage {
-  private final Path filePath;
+    private final Path filePath;
 
-  public Storage(String... pathElements) {
-    this.filePath = Paths.get(pathElements[0], java.util.Arrays.copyOfRange(pathElements, 1, pathElements.length));
-  }
-
-  /** Returns the file used for persistent task storage. */
-  public Path getPath(){
-    return this.filePath;
-  }
-
-  /** Saves the current tasks to disk, replacing the previous contents. */
-  public void save(List<Task> currList){
-    Path parentDir = this.filePath.getParent();
-    try {
-      //Handles the case if the data dir is not written into local memory
-      if (parentDir != null) {
-          Files.createDirectories(parentDir);
-      }
-      //overwrite local stored checklist with currList
-      List<String> convertedListString = new ArrayList<>();
-      for (Task task : currList) {
-        convertedListString.add(taskToListString(task));
-      }
-      
-       Files.write(this.filePath, convertedListString, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-    } catch (IOException e) {
-      System.err.println("Failed to load: " + e.getMessage());
+    /**
+     * Creates storage for the file identified by the given path elements.
+     *
+     * @param pathElements path segments for the storage file
+     */
+    public Storage(String... pathElements) {
+        this.filePath = Paths.get(pathElements[0], Arrays.copyOfRange(pathElements, 1, pathElements.length));
     }
-  }
 
-  /*Converts one task into the delimiter-separated storage format. */
-  private String taskToListString(Task task) {
-    String completion = task.getStatus() ? "1" : "0";
-
-    return switch (task) {
-      case Todo todo -> "T|" + completion + "|" + todo.getTask();
-      case Deadline deadline -> "D|" + completion + "|" + deadline.getTask()
-              + "|" + deadline.getDeadline();
-      case Events event -> "E|" + completion + "|" + event.getTask()
-              + "|" + event.getStart() + "|" + event.getEnd();
-      case null -> throw new IllegalArgumentException("Cannot save a null task");
-      default -> throw new IllegalArgumentException("Unknown task type");
-    };
-  }
-
-
-  /** Loads saved task records, or returns an empty list if none exist. */
-  public List<String> load(){
-    try {
-      if (Files.exists(this.filePath)) {
-        List<String> prev_session_list = Files.readAllLines(this.filePath);
-        System.out.println(String.join("\n", prev_session_list));
-        return prev_session_list;
-      } else {
-        System.out.println("You have no tasks to display !!");
-      }
-    } catch (IOException e) {
-      System.err.println("Failed to load checklist: " + e.getMessage());
+    public Path getPath() {
+        return this.filePath;
     }
-    return new ArrayList<>();
-  }
+
+    /**
+     * Saves the current tasks to disk, replacing the previous contents.
+     *
+     * @param currentTasks tasks to save
+     */
+    public void save(List<Task> currentTasks) {
+        Path parentDir = this.filePath.getParent();
+        try {
+            if (parentDir != null) {
+                Files.createDirectories(parentDir);
+            }
+
+            List<String> convertedTaskStrings = new ArrayList<>();
+            for (Task task : currentTasks) {
+                convertedTaskStrings.add(taskToListString(task));
+            }
+
+            Files.write(this.filePath, convertedTaskStrings, StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            System.err.println("Failed to load: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Converts one task into the delimiter-separated storage format.
+     */
+    private String taskToListString(Task task) {
+        String completion = task.getStatus() ? "1" : "0";
+
+        return switch (task) {
+            case Todo todo -> "T|" + completion + "|" + todo.getTask();
+            case Deadline deadline -> "D|" + completion + "|" + deadline.getTask()
+                    + "|" + deadline.getDeadline();
+            case Events event -> "E|" + completion + "|" + event.getTask()
+                    + "|" + event.getStart() + "|" + event.getEnd();
+            case null -> throw new IllegalArgumentException("Cannot save a null task");
+            default -> throw new IllegalArgumentException("Unknown task type");
+        };
+    }
+
+    /**
+     * Loads saved task records, or returns an empty list if none exist.
+     *
+     * @return saved task records
+     */
+    public List<String> load() {
+        try {
+            if (Files.exists(this.filePath)) {
+                List<String> previousSessionList = Files.readAllLines(this.filePath);
+                System.out.println(String.join("\n", previousSessionList));
+                return previousSessionList;
+            } else {
+                System.out.println("You have no tasks to display !!");
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load checklist: " + e.getMessage());
+        }
+        return new ArrayList<>();
+    }
 }

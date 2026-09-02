@@ -1,4 +1,3 @@
-//Written by Codex, Model: gpt-5.6-luna low
 package rice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,20 +17,17 @@ public class ParserTest {
 
     @Test
     void parseDate_singleDigitMonthOrDay_throwsException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Parser.parseDate("2026-2-3"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.parseDate("2026-2-3"));
     }
 
     @Test
     void parseDate_impossibleCalendarDate_throwsException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Parser.parseDate("2026-02-30"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.parseDate("2026-02-30"));
     }
 
     @Test
     void parseDate_wrongDateFormat_throwsException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Parser.parseDate("12/12/2026"));
+        assertThrows(IllegalArgumentException.class, () -> Parser.parseDate("12/12/2026"));
     }
 
     @Test
