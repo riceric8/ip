@@ -10,13 +10,15 @@ public class Rice {
     private Storage storage = new Storage("data", "listOfTasks.txt");
     private Ui ui = new Ui();
     private TaskList tasks = new TaskList();
+    private boolean hasLoadedSavedTasks;
 
     /**
      * Starts the read-evaluate loop for user commands.
+     * Maintains the CLI version for RiceBot
      */
     public void run() {
         ui.greet();
-        tasks.addAll(parser.parseTasks(storage.load()));
+        loadSavedTasks();
         while (true) {
             try {
                 String input = ui.readInput().trim();
@@ -26,11 +28,11 @@ public class Rice {
                 }
                 String[] parts = input.split(" ", 2);
                 switch (parts[0]) {
-                    case "list" -> showTasks();
-                    case "find" -> findTasks(input);
-                    case "todo", "deadline", "event" -> addTask(input);
-                    case "mark", "unmark" -> changeStatus(parts[0], input);
-                    case "delete" -> deleteTask(input);
+                    case "list" -> ui.show(showTasks());
+                    case "find" -> ui.show(findTasks(input));
+                    case "todo", "deadline", "event" -> ui.show(addTask(input));
+                    case "mark", "unmark" -> ui.show(changeStatus(parts[0], input));
+                    case "delete" -> ui.show(deleteTask(input));
                     default -> throw new RiceException("I'm sorry, but I dont know what that means :-(");
                 }
             } catch (RiceException | IllegalArgumentException e) {
@@ -39,13 +41,22 @@ public class Rice {
         }
     }
 
-    private void showTasks() {
-        for (int i = 0; i < tasks.size(); i++) {
-            ui.show((i + 1) + "." + tasks.get(i));
+    private void loadSavedTasks() {
+        if (!hasLoadedSavedTasks) {
+            tasks.addAll(parser.parseTasks(storage.load()));
+            hasLoadedSavedTasks = true;
         }
     }
 
-    private void findTasks(String input) throws RiceException {
+    private String showTasks() {
+        StringBuilder response = new StringBuilder();
+        for (int i = 0; i < tasks.size(); i++) {
+            response.append(i + 1).append(".").append(tasks.get(i)).append("\n");
+        }
+        return response.toString().trim();
+    }
+
+    private String findTasks(String input) throws RiceException {
         String[] parts = input.split(" ", 2);
         if (parts.length < 2 || parts[1].isBlank()) {
             throw new RiceException("Please provide a keyword to search for");
@@ -53,42 +64,44 @@ public class Rice {
 
         List<Task> matchingTasks = tasks.find(parts[1].trim());
         if (matchingTasks.isEmpty()) {
-            ui.show("No matching tasks found.");
-            return;
+            return "No matching tasks found.";
         }
 
+        StringBuilder response = new StringBuilder();
         for (Task task : matchingTasks) {
-            ui.show(task.toString());
+            response.append(task).append("\n");
         }
+        return response.toString().trim();
     }
 
-    private void addTask(String input) throws RiceException {
+    private String addTask(String input) throws RiceException {
         Task task = parser.createTask(input);
         tasks.add(task);
         storage.save(tasks.getTasks());
-        ui.show("Got it. I've added this task:");
-        ui.show("  " + task);
-        ui.show(String.format("Now you have %d tasks in the list", tasks.size()));
+        return "Got it. I've added this task:\n"
+                + "  " + task + "\n"
+                + String.format("Now you have %d tasks in the list", tasks.size());
     }
 
-    private void changeStatus(String command, String input) throws RiceException {
+    private String changeStatus(String command, String input) throws RiceException {
         int index = taskIndex(input);
         if (command.equals("mark")) {
             tasks.mark(index);
-            ui.show("Nice! I've marked this task as done:");
-            ui.show("  " + tasks.get(index));
+            storage.save(tasks.getTasks());
+            return "Nice! I've marked this task as done:\n"
+                    + "  " + tasks.get(index);
         } else {
             tasks.unmark(index);
-            ui.show("OK, I've marked this task as not done yet:");
-            ui.show("  " + tasks.get(index));
+            storage.save(tasks.getTasks());
+            return "OK, I've marked this task as not done yet:\n"
+                    + "  " + tasks.get(index);
         }
-        storage.save(tasks.getTasks());
     }
 
-    private void deleteTask(String input) throws RiceException {
+    private String deleteTask(String input) throws RiceException {
         Task removed = tasks.remove(taskIndex(input));
-        ui.show("Removed: " + removed);
         storage.save(tasks.getTasks());
+        return ui.show("Removed: " + removed);
     }
 
     private int taskIndex(String input) throws RiceException {
@@ -105,6 +118,35 @@ public class Rice {
             return taskNumber - 1;
         } catch (NumberFormatException e) {
             throw new RiceException("Task number must be a number");
+        }
+    }
+
+    public String displayList(){
+        String list = "";
+        for (int i = 0; i < tasks.size(); i += 1){
+            list += tasks.get(i).toString() + "\n";
+        }
+        return list;
+    }
+
+    public String getResponse(String input) {
+        loadSavedTasks();
+        try {
+            String trimmedInput = input.trim();
+            if (trimmedInput.equals("bye")) {
+                return "Bye. Hope to see you again soon!";
+            }
+            String[] parts = trimmedInput.split(" ", 2);
+            return switch (parts[0]) {
+                case "list" -> showTasks();
+                case "find" -> findTasks(trimmedInput);
+                case "todo", "deadline", "event" -> addTask(trimmedInput);
+                case "mark", "unmark" -> changeStatus(parts[0], trimmedInput);
+                case "delete" -> deleteTask(trimmedInput);
+                default -> throw new RiceException("I'm sorry, but I dont know what that means :-(");
+            };
+        } catch (RiceException | IllegalArgumentException e) {
+            return e.getMessage();
         }
     }
 
