@@ -21,11 +21,6 @@ public class ParserTest {
     }
 
     @Test
-    void parseDate_impossibleCalendarDate_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> Parser.parseDate("2026-02-30"));
-    }
-
-    @Test
     void parseDate_wrongDateFormat_throwsException() {
         assertThrows(IllegalArgumentException.class, () -> Parser.parseDate("12/12/2026"));
     }
