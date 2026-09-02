@@ -2,30 +2,38 @@ package rice;
 
 import java.time.LocalDate;
 
-
+/**
+ * Represents a task that must be completed by a specific date.
+ */
 public class Deadline extends Task {
-  private LocalDate deadline;
+    private LocalDate deadline;
 
-  public Deadline(String task, String deadline) {
-    super(task);
-    this.deadline = Parser.parseDate(deadline);
-  }
-
-  public String getDeadline() {
-    return this.deadline.toString();
-  }
-
-  @Override
-  public String toString(){ 
-    String completion = "";
-
-    if (super.getStatus()) {
-        completion = "[X]";
-    } else {
-        completion = "[ ]";     
+    /**
+     * Creates a deadline task from its description and deadline date.
+     *
+     * @param task the task description
+     * @param deadline the deadline in yyyy-MM-dd format
+     */
+    public Deadline(String task, String deadline) {
+        super(task);
+        this.deadline = Parser.parseDate(deadline);
     }
 
-    return "[D]" + completion + " " + super.getTask() + "(by: "
-            + Parser.formatDate(this.deadline) + ")";
-  }
+    public String getDeadline() {
+        return this.deadline.toString();
+    }
+
+    @Override
+    public String toString() {
+        String completion = "";
+
+        if (super.getStatus()) {
+            completion = "[X]";
+        } else {
+            completion = "[ ]";
+        }
+
+        return "[D]" + completion + " " + super.getTask() + "(by: "
+                + Parser.formatDate(this.deadline) + ")";
+    }
 }
