@@ -32,15 +32,9 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        String completion = "";
 
-        if (super.getisDone()) {
-            completion = "[X]";
-        } else {
-            completion = "[ ]";
-        }
 
-        return "[E]" + completion + " " + super.getTask() + "(from: "
+        return "[E]" + super.completionMarker() + " " + super.getTask() + "(from: "
                 + Parser.formatDate(this.start) + " to: "
                 + Parser.formatDate(this.end) + ")";
     }

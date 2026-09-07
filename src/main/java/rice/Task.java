@@ -34,20 +34,16 @@ public class Task {
         return this.task;
     }
 
-    public boolean getisDone() {
+    public boolean isDone() {
         return this.isDone;
     }
 
     @Override
     public String toString() {
-        String completion = "";
+        return this.completionMarker() + " " + this.task;
+    }
 
-        if (this.isDone) {
-            completion = "[X]";
-        } else {
-            completion = "[ ]";
-        }
-
-        return completion + " " + this.task;
+    public String completionMarker() {
+        return this.isDone() ? "[X]" : "[ ]";
     }
 }

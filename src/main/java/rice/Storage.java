@@ -56,7 +56,7 @@ public class Storage {
      * Converts one task into the delimiter-separated storage format.
      */
     private String taskToListString(Task task) {
-        String completion = task.getisDone() ? "1" : "0";
+        String completion = task.isDone() ? "1" : "0";
 
         return switch (task) {
             case Todo todo -> "T|" + completion + "|" + todo.getTask();

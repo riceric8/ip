@@ -25,15 +25,9 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        String completion = "";
+    
 
-        if (super.getisDone()) {
-            completion = "[X]";
-        } else {
-            completion = "[ ]";
-        }
-
-        return "[D]" + completion + " " + super.getTask() + "(by: "
+        return "[D]" + super.completionMarker() + " " + super.getTask() + "(by: "
                 + Parser.formatDate(this.deadline) + ")";
     }
 }

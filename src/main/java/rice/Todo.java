@@ -16,14 +16,8 @@ public class Todo extends Task {
 
     @Override
     public String toString() {
-        String completion = "";
+      
 
-        if (super.getisDone()) {
-            completion = "[X]";
-        } else {
-            completion = "[ ]";
-        }
-
-        return "[T]" + completion + " " + super.getTask();
+        return "[T]" + super.completionMarker() + " " + super.getTask();
     }
 }

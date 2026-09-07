@@ -116,7 +116,7 @@ public class Rice {
                 throw new RiceException("Invalid task number");
             }
             int index = taskNumber - 1;
-            assert index > 0 && index < tasks.size();
+            assert index >= 0 && index < tasks.size();
             return index;
         } catch (NumberFormatException e) {
             throw new RiceException("Task number must be a number");
