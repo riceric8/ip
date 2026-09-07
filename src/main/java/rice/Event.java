@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * Represents a task that takes place between two dates.
  */
-public class Events extends Task {
+public class Event extends Task {
     private LocalDate start;
     private LocalDate end;
 
@@ -16,7 +16,7 @@ public class Events extends Task {
      * @param start the start date in yyyy-MM-dd format
      * @param end the end date in yyyy-MM-dd format
      */
-    public Events(String task, String start, String end) {
+    public Event(String task, String start, String end) {
         super(task);
         this.start = Parser.parseDate(start);
         this.end = Parser.parseDate(end);

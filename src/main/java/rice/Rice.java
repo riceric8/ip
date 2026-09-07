@@ -101,7 +101,7 @@ public class Rice {
     private String deleteTask(String input) throws RiceException {
         Task removed = tasks.remove(taskIndex(input));
         storage.save(tasks.getTasks());
-        return ui.show("Removed: " + removed);
+        return "Removed: " + removed;
     }
 
     private int taskIndex(String input) throws RiceException {
@@ -123,9 +123,9 @@ public class Rice {
         }
     }
 
-    public String displayList(){
+    public String displayList() {
         String list = "";
-        for (int i = 0; i < tasks.size(); i += 1){
+        for (int i = 0; i < tasks.size(); i += 1) {
             list += tasks.get(i).toString() + "\n";
         }
         return list;

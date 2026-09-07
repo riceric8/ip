@@ -25,7 +25,7 @@ public class Parser {
                 task = switch (fields[0]) {
                     case "T" -> fields.length == 3 ? new Todo(fields[2]) : null;
                     case "D" -> fields.length == 4 ? new Deadline(fields[2], fields[3]) : null;
-                    case "E" -> fields.length == 5 ? new Events(fields[2], fields[3], fields[4]) : null;
+                    case "E" -> fields.length == 5 ? new Event(fields[2], fields[3], fields[4]) : null;
                     default -> null;
                 };
             } catch (IllegalArgumentException e) {
@@ -105,6 +105,6 @@ public class Parser {
         if (parts.length != 3 || !parts[1].trim().startsWith("from ") || !parts[2].trim().startsWith("to ")) {
             throw new RiceException("Use: event description /from date /to date");
         }
-        return new Events(parts[0].trim(), parts[1].trim().substring(5).trim(), parts[2].trim().substring(3).trim());
+        return new Event(parts[0].trim(), parts[1].trim().substring(5).trim(), parts[2].trim().substring(3).trim());
     }
 }
