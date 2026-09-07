@@ -61,7 +61,6 @@ public class Rice {
         if (parts.length < 2 || parts[1].isBlank()) {
             throw new RiceException("Please provide a keyword to search for");
         }
-
         List<Task> matchingTasks = tasks.find(parts[1].trim());
         if (matchingTasks.isEmpty()) {
             return "No matching tasks found.";
@@ -84,6 +83,7 @@ public class Rice {
     }
 
     private String changeStatus(String command, String input) throws RiceException {
+        assert command.equals("mark") || command.equals("unmark");
         int index = taskIndex(input);
         if (command.equals("mark")) {
             tasks.mark(index);
@@ -115,7 +115,9 @@ public class Rice {
             if (taskNumber < 1 || taskNumber > tasks.size()) {
                 throw new RiceException("Invalid task number");
             }
-            return taskNumber - 1;
+            int index = taskNumber - 1;
+            assert index > 0 && index < tasks.size();
+            return index;
         } catch (NumberFormatException e) {
             throw new RiceException("Task number must be a number");
         }
