@@ -18,7 +18,7 @@ public class Todo extends Task {
     public String toString() {
         String completion = "";
 
-        if (super.getStatus()) {
+        if (super.getisDone()) {
             completion = "[X]";
         } else {
             completion = "[ ]";

@@ -56,13 +56,13 @@ public class Storage {
      * Converts one task into the delimiter-separated storage format.
      */
     private String taskToListString(Task task) {
-        String completion = task.getStatus() ? "1" : "0";
+        String completion = task.getisDone() ? "1" : "0";
 
         return switch (task) {
             case Todo todo -> "T|" + completion + "|" + todo.getTask();
             case Deadline deadline -> "D|" + completion + "|" + deadline.getTask()
                     + "|" + deadline.getDeadline();
-            case Events event -> "E|" + completion + "|" + event.getTask()
+            case Event event -> "E|" + completion + "|" + event.getTask()
                     + "|" + event.getStart() + "|" + event.getEnd();
             case null -> throw new IllegalArgumentException("Cannot save a null task");
             default -> throw new IllegalArgumentException("Unknown task type");
