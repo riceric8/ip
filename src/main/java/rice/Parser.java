@@ -10,6 +10,9 @@ import java.util.List;
  * Handles command parsing, date parsing, and saved task reconstruction.
  */
 public class Parser {
+    //Expected input for date-time format
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+
     /**
      * Reconstructs task objects from saved delimiter-separated records.
      *
@@ -49,7 +52,7 @@ public class Parser {
      */
     public static LocalDate parseDate(String date) {
         try {
-            return LocalDate.parse(date.trim(), DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+            return LocalDate.parse(date.trim(), DATE_TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid date. Use yyyy-MM-dd, for example 2026-12-12.");
         }
