@@ -32,8 +32,6 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-
-
         return "[E]" + super.completionMarker() + " " + super.getTask() + "(from: "
                 + Parser.formatDate(this.start) + " to: "
                 + Parser.formatDate(this.end) + ")";

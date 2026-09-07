@@ -2,6 +2,7 @@ package rice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Stores and manages the current list of tasks.
@@ -37,7 +38,7 @@ public class TaskList {
     }
 
     public Task get(int index) {
-        assert index > 0 && index < taskList.size();
+        assert index >= 0 && index < taskList.size();
         return taskList.get(index);
     }
 
@@ -65,16 +66,11 @@ public class TaskList {
      * @return matching tasks
      */
     public List<Task> find(String keyword) {
-        List<Task> matchingTasks = new ArrayList<>();
         String searchTerm = keyword.toLowerCase();
 
-        for (Task task : taskList) {
-            if (task.getTask().toLowerCase().contains(searchTerm)) {
-                matchingTasks.add(task);
-            }
-        }
-
-        return matchingTasks;
+        return taskList.stream()
+                       .filter(task -> task.getTask().toLowerCase().contains(searchTerm))
+                       .toList();
     }
 
     /**
