@@ -24,7 +24,7 @@ public class StorageTest {
         Deadline deadline = new Deadline("submit report", "2026-12-12");
         deadline.mark();
 
-        Events event = new Events("team meeting", "2026-12-13", "2026-12-14");
+        Event event = new Event("team meeting", "2026-12-13", "2026-12-14");
 
         storage.save(List.of(todo, deadline, event));
 

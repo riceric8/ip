@@ -10,6 +10,9 @@ import java.util.List;
  * Handles command parsing, date parsing, and saved task reconstruction.
  */
 public class Parser {
+    //Expected input for date-time format
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+
     /**
      * Reconstructs task objects from saved delimiter-separated records.
      *
@@ -25,7 +28,7 @@ public class Parser {
                 task = switch (fields[0]) {
                     case "T" -> fields.length == 3 ? new Todo(fields[2]) : null;
                     case "D" -> fields.length == 4 ? new Deadline(fields[2], fields[3]) : null;
-                    case "E" -> fields.length == 5 ? new Events(fields[2], fields[3], fields[4]) : null;
+                    case "E" -> fields.length == 5 ? new Event(fields[2], fields[3], fields[4]) : null;
                     default -> null;
                 };
             } catch (IllegalArgumentException e) {
@@ -49,7 +52,7 @@ public class Parser {
      */
     public static LocalDate parseDate(String date) {
         try {
-            return LocalDate.parse(date.trim(), DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+            return LocalDate.parse(date.trim(), DATE_TIME_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid date. Use yyyy-MM-dd, for example 2026-12-12.");
         }
@@ -105,6 +108,6 @@ public class Parser {
         if (parts.length != 3 || !parts[1].trim().startsWith("from ") || !parts[2].trim().startsWith("to ")) {
             throw new RiceException("Use: event description /from date /to date");
         }
-        return new Events(parts[0].trim(), parts[1].trim().substring(5).trim(), parts[2].trim().substring(3).trim());
+        return new Event(parts[0].trim(), parts[1].trim().substring(5).trim(), parts[2].trim().substring(3).trim());
     }
 }

@@ -101,7 +101,7 @@ public class Rice {
     private String deleteTask(String input) throws RiceException {
         Task removed = tasks.remove(taskIndex(input));
         storage.save(tasks.getTasks());
-        return ui.show("Removed: " + removed);
+        return "Removed: " + removed;
     }
 
     private int taskIndex(String input) throws RiceException {
@@ -116,16 +116,16 @@ public class Rice {
                 throw new RiceException("Invalid task number");
             }
             int index = taskNumber - 1;
-            assert index > 0 && index < tasks.size();
+            assert index >= 0 && index < tasks.size();
             return index;
         } catch (NumberFormatException e) {
             throw new RiceException("Task number must be a number");
         }
     }
 
-    public String displayList(){
+    public String displayList() {
         String list = "";
-        for (int i = 0; i < tasks.size(); i += 1){
+        for (int i = 0; i < tasks.size(); i += 1) {
             list += tasks.get(i).toString() + "\n";
         }
         return list;
