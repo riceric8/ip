@@ -41,6 +41,7 @@ public class Rice {
         }
     }
 
+
     private void loadSavedTasks() {
         if (!hasLoadedSavedTasks) {
             tasks.addAll(parser.parseTasks(storage.load()));
@@ -123,6 +124,11 @@ public class Rice {
         }
     }
 
+    /**
+     * Returns the current tasks as a newline-separated list.
+     *
+     * @return formatted task list
+     */
     public String displayList() {
         String list = "";
         for (int i = 0; i < tasks.size(); i += 1) {
@@ -131,6 +137,12 @@ public class Rice {
         return list;
     }
 
+    /**
+     * Processes one user command and returns the response.
+     *
+     * @param input user command
+     * @return response to the command
+     */
     public String getResponse(String input) {
         loadSavedTasks();
         try {

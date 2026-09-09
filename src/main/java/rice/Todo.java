@@ -1,4 +1,5 @@
 package rice;
+import java.time.LocalDate;
 
 /**
  * Represents a task with no date attached.
@@ -12,6 +13,11 @@ public class Todo extends Task {
      */
     public Todo(String task) {
         super(task);
+    }
+
+    @Override
+    public LocalDate getDeadlineDate() {
+        return LocalDate.MAX;
     }
 
     @Override
