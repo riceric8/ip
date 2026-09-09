@@ -24,9 +24,12 @@ public class Deadline extends Task {
     }
 
     @Override
-    public String toString() {
-    
+    public LocalDate getDeadlineDate() {
+        return this.deadline;
+    }
 
+    @Override
+    public String toString() {
         return "[D]" + super.completionMarker() + " " + super.getTask() + "(by: "
                 + Parser.formatDate(this.deadline) + ")";
     }

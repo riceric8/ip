@@ -1,8 +1,8 @@
 package rice;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Stores and manages the current list of tasks.
@@ -24,6 +24,7 @@ public class TaskList {
      */
     public void add(Task task) {
         taskList.add(task);
+        sortTasks();
     }
 
     /**
@@ -57,6 +58,7 @@ public class TaskList {
      */
     public void addAll(List<Task> tasks) {
         taskList.addAll(tasks);
+        sortTasks();
     }
 
     /**
@@ -89,5 +91,12 @@ public class TaskList {
      */
     public void unmark(int index) {
         get(index).unmark();
+    }
+
+    /**
+     * Sorts tasks by their deadline, placing tasks without a deadline last.
+     */
+    public void sortTasks() {
+        taskList.sort(Comparator.comparing(Task::getDeadlineDate));
     }
 }

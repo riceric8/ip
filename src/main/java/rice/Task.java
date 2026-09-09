@@ -1,9 +1,10 @@
 package rice;
+import java.time.LocalDate;
 
 /**
  * Represents a task with a description and completion isDone.
  */
-public class Task {
+public abstract class Task {
     private String task;
     private boolean isDone = false;
 
@@ -46,4 +47,6 @@ public class Task {
     public String completionMarker() {
         return this.isDone() ? "[X]" : "[ ]";
     }
+
+    public abstract LocalDate getDeadlineDate();
 }
