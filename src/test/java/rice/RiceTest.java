@@ -33,7 +33,7 @@ public class RiceTest {
         rice.getResponse("todo Buy rice");
 
         String markResponse = rice.getResponse("mark 1");
-        assertTrue(markResponse.contains("Nice! I've marked this task as done:"));
+        assertTrue(markResponse.contains("Nice! I've marked this task as done, we cooked this rice:"));
         assertTrue(markResponse.contains("[X] Buy rice"));
 
         String deleteResponse = rice.getResponse("delete 1");
@@ -42,6 +42,17 @@ public class RiceTest {
 
         String listResponse = rice.getResponse("list");
         assertEquals("There are no tasks. Our bowl is empty :(", listResponse);
+    }
+
+    @Test
+    void getResponse_unmark_task_setsTaskBackToIncomplete() throws Exception {
+        Rice rice = createFreshRice();
+        rice.getResponse("todo Buy rice");
+        rice.getResponse("mark 1");
+
+        String unmarkResponse = rice.getResponse("unmark 1");
+        assertTrue(unmarkResponse.contains("OK, I've marked this task as not done yet, the rice is RAW!!:"));
+        assertTrue(unmarkResponse.contains("[ ] Buy rice"));
     }
 
     @Test

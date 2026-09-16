@@ -95,12 +95,12 @@ public class Rice {
         if (command.equals("mark")) {
             tasks.mark(index);
             storage.save(tasks.getTasks());
-            return "Nice! I've marked this task as done:\n"
+            return "Nice! I've marked this task as done, we cooked this rice:\n"
                     + "  " + tasks.get(index);
         } else {
             tasks.unmark(index);
             storage.save(tasks.getTasks());
-            return "OK, I've marked this task as not done yet:\n"
+            return "OK, I've marked this task as not done yet, the rice is RAW!!:\n"
                     + "  " + tasks.get(index);
         }
     }

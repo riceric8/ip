@@ -23,6 +23,8 @@
               <VBox spacing="6.0" prefWidth="265.0" maxWidth="265.0"
                   maxHeight="1.7976931348623157E308">
                   <children>
+                      <Label fx:id="headerLabel" text="Rice Bot" wrapText="true"
+                          style="-fx-font-family: 'Comic Sans MS', 'Comic Sans', cursive; -fx-font-weight: bold; -fx-text-fill: #2f2933; -fx-font-size: 14px;" />
                       <HBox alignment="CENTER_LEFT" spacing="4.0" prefWidth="265.0" maxWidth="265.0">
                           <children>
                               <Label fx:id="warningIcon" alignment="CENTER" maxWidth="22.0" maxHeight="22.0"
