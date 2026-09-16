@@ -12,6 +12,7 @@
          maxWidth="1.7976931348623157E308"
          prefWidth="400.0"
          type="javafx.scene.layout.HBox"
+         style="-fx-font-family: 'Comic Sans MS', 'Comic Sans', cursive;"
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -26,17 +27,17 @@
                           <children>
                               <Label fx:id="warningIcon" alignment="CENTER" maxWidth="22.0" maxHeight="22.0"
                                   prefWidth="22.0" prefHeight="22.0" text="!"
-                                  style="-fx-background-color: #e07a2d; -fx-background-radius: 11; -fx-text-fill: white;
+                                  style="-fx-font-family: 'Comic Sans MS', 'Comic Sans', cursive; -fx-background-color: #e07a2d; -fx-background-radius: 11; -fx-text-fill: white;
                                       -fx-font-weight: bold;" />
                               <HBox fx:id="suggestionRow" alignment="CENTER_LEFT" spacing="4.0"
                                   prefWidth="239.0" maxWidth="239.0">
                                   <children>
                                       <Label fx:id="suggestionIcon" alignment="CENTER" maxWidth="22.0" maxHeight="22.0"
                                           prefWidth="22.0" prefHeight="22.0" text="✓"
-                                          style="-fx-background-color: #2f855a; -fx-background-radius: 11; -fx-text-fill: white;
+                                          style="-fx-font-family: 'Comic Sans MS', 'Comic Sans', cursive; -fx-background-color: #2f855a; -fx-background-radius: 11; -fx-text-fill: white;
                                               -fx-font-weight: bold;" />
                                       <Label fx:id="suggestion" wrapText="true" maxWidth="190.0"
-                                          style="-fx-text-fill: #2f855a; -fx-font-size: 10px;" />
+                                          style="-fx-font-family: 'Comic Sans MS', 'Comic Sans', cursive; -fx-text-fill: #2f855a; -fx-font-size: 10px;" />
                                   </children>
                               </HBox>
                           </children>
@@ -44,11 +45,11 @@
                       <Label fx:id="dialog" text="Label" wrapText="true" prefWidth="265.0"
                           minWidth="0.0" maxWidth="265.0" maxHeight="1.7976931348623157E308"
                           textOverrun="CLIP"
-                          style="-fx-text-fill: #1f2933;" />
+                          style="-fx-font-family: 'Comic Sans MS', 'Comic Sans', cursive; -fx-text-fill: #1f2933;" />
                       <Label fx:id="inputLabel" wrapText="true" prefWidth="265.0"
                           minWidth="0.0" maxWidth="265.0" maxHeight="1.7976931348623157E308"
                           textOverrun="CLIP"
-                          style="-fx-text-fill: #1f2933; -fx-font-size: 12px;" />
+                          style="-fx-font-family: 'Comic Sans MS', 'Comic Sans', cursive; -fx-text-fill: #1f2933; -fx-font-size: 12px;" />
                   </children>
               </VBox>
              </children>
