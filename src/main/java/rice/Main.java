@@ -20,8 +20,11 @@ public class Main extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
-            Scene scene = new Scene(ap);
+            Scene scene = new Scene(ap, 400, 600);
             stage.setScene(scene);
+            stage.setResizable(true);
+            stage.setMinWidth(300.0);
+            stage.setMinHeight(400.0);
             fxmlLoader.<MainWindow>getController().setRice(rice); // inject the Duke instance
             stage.show();
         } catch (IOException e) {
