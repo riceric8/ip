@@ -18,6 +18,7 @@
                    onAction="#handleUserInput"
                    prefHeight="41.0"
                    prefWidth="324.0"
+                   style="-fx-background-color: #fff3a3; -fx-border-color: #e0b400; -fx-border-width: 1.0;"
                    AnchorPane.bottomAnchor="1.0" />
         <Button fx:id="sendButton"
                 layoutX="324.0"

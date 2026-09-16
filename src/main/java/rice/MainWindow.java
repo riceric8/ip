@@ -1,5 +1,6 @@
 package rice;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -27,7 +28,7 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.heightProperty().addListener(observable -> Platform.runLater(() -> scrollPane.setVvalue(1.0)));
     }
 
     /** Injects the Duke instance */
@@ -44,10 +45,16 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = rice.getResponse(input);
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getRiceDialog(response, riceImage)
-        );
+        String suggestion = rice.getSuggestion(response);
+        if (suggestion == null) {
+            dialogContainer.getChildren().addAll(
+                    DialogBox.getUserDialog(input, userImage),
+                    DialogBox.getRiceDialog(response, riceImage));
+        } else {
+            dialogContainer.getChildren().addAll(
+                    DialogBox.getErrorDialog(response, input, riceImage),
+                    DialogBox.getSuggestionDialog(suggestion, riceImage));
+        }
         userInput.clear();
     }
 }
