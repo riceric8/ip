@@ -130,11 +130,11 @@ public class Rice {
      * @return formatted task list
      */
     public String displayList() {
-        String list = "";
-        for (int i = 0; i < tasks.size(); i += 1) {
-            list += tasks.get(i).toString() + "\n";
+        loadSavedTasks();
+        if (tasks.size() == 0) {
+            return "There are no tasks.";
         }
-        return list;
+        return showTasks();
     }
 
     /**
@@ -162,6 +162,30 @@ public class Rice {
         } catch (RiceException | IllegalArgumentException e) {
             return e.getMessage();
         }
+    }
+
+    /**
+     * Returns a correction suggestion for an error response, if one applies.
+     *
+     * @param response response returned by {@link #getResponse(String)}
+     * @return correction suggestion, or null when the response is not an error
+     */
+    public String getSuggestion(String response) {
+        return switch (response) {
+            case "I'm sorry, but I dont know what that means :-("
+                    -> "Try list, find, todo, deadline, event, mark, unmark, or delete.";
+            case "Please provide a keyword to search for" -> "Try: find <keyword>";
+            case "Task number is required" -> "Try: mark <number>, unmark <number>, or delete <number>";
+            case "Invalid task number" -> "Use a task number from the list";
+            case "Task number must be a number" -> "Replace the task number with a number, e.g. delete 1";
+            case "Task description cannot be empty" -> "Add a description after the command";
+            case "Use: deadline description /by yyyy-MM-dd" -> "Try: deadline <description> /by <YYYY-MM-DD>";
+            case "Use: event description /from date /to date" -> "Try: event <description> /from <YYYY-MM-DD>"
+                    + " /to <YYYY-MM-DD>";
+            default -> response.startsWith("Invalid date.")
+                    ? "Use the date format yyyy-MM-DD, e.g. 2026-12-12"
+                    : null;
+        };
     }
 
     public static void main(String[] args) {
