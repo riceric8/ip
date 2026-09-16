@@ -6,8 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+
 /**
  * Controller for the main GUI.
  */
@@ -24,14 +24,14 @@ public class MainWindow extends AnchorPane {
     private Rice rice;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/Student.png"));
-    private Image riceImage = new Image(this.getClass().getResourceAsStream("/images/Rice.jpg"));
+    private Image riceImage = new Image(this.getClass().getResourceAsStream("/images/RiceCooker.jpeg"));
 
     @FXML
     public void initialize() {
         dialogContainer.heightProperty().addListener(observable -> Platform.runLater(() -> scrollPane.setVvalue(1.0)));
     }
 
-    /** Injects the Duke instance */
+    /** Injects the Rice instance */
     public void setRice(Rice r) {
         rice = r;
         dialogContainer.getChildren().add(DialogBox.getRiceDialog(rice.displayList(), riceImage));

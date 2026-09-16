@@ -1,6 +1,0 @@
-D|1|homeowork|2026-10-12
-E|0|a|2026-10-12|2026-10-15
-D|1|homeowork|2026-12-10
-D|0|homework|2026-12-12
-D|1|homework|2026-12-12
-T|1|homework
