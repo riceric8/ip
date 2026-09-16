@@ -38,6 +38,8 @@ public class DialogBox extends HBox {
     private Label suggestion;
     @FXML
     private HBox suggestionRow;
+    @FXML
+    private Label headerLabel;
 
 
     private DialogBox(String text, Image img) {
@@ -58,6 +60,8 @@ public class DialogBox extends HBox {
         inputLabel.setManaged(false);
         suggestionRow.setVisible(false);
         suggestionRow.setManaged(false);
+        headerLabel.setVisible(false);
+        headerLabel.setManaged(false);
     }
 
     /**
@@ -76,6 +80,8 @@ public class DialogBox extends HBox {
 
     public static DialogBox getRiceDialog(String s, Image i) {
         var db = new DialogBox(s, i);
+        db.headerLabel.setVisible(true);
+        db.headerLabel.setManaged(true);
         db.flip();
         return db;
     }

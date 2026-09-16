@@ -50,9 +50,15 @@ public class Rice {
     }
 
     private String showTasks() {
+        if (tasks.size() == 0) {
+            return "There are no tasks. Our bowl is empty :(";
+        }
         StringBuilder response = new StringBuilder();
         for (int i = 0; i < tasks.size(); i++) {
             response.append(i + 1).append(".").append(tasks.get(i)).append("\n");
+        }
+        if (response.length() > 0) {
+            response.append("Our bowl is filled :)");
         }
         return response.toString().trim();
     }
@@ -64,7 +70,7 @@ public class Rice {
         }
         List<Task> matchingTasks = tasks.find(parts[1].trim());
         if (matchingTasks.isEmpty()) {
-            return "No matching tasks found.";
+            return "No matching tasks found. Theres no rice of that type!";
         }
 
         StringBuilder response = new StringBuilder();
@@ -80,7 +86,7 @@ public class Rice {
         storage.save(tasks.getTasks());
         return "Got it. I've added this task:\n"
                 + "  " + task + "\n"
-                + String.format("Now you have %d tasks in the list", tasks.size());
+                + String.format("Now you have %d tasks in the list, look at all that rice!", tasks.size());
     }
 
     private String changeStatus(String command, String input) throws RiceException {
@@ -89,12 +95,12 @@ public class Rice {
         if (command.equals("mark")) {
             tasks.mark(index);
             storage.save(tasks.getTasks());
-            return "Nice! I've marked this task as done:\n"
+            return "Nice! I've marked this task as done, we cooked this rice:\n"
                     + "  " + tasks.get(index);
         } else {
             tasks.unmark(index);
             storage.save(tasks.getTasks());
-            return "OK, I've marked this task as not done yet:\n"
+            return "OK, I've marked this task as not done yet, the rice is RAW!!:\n"
                     + "  " + tasks.get(index);
         }
     }
@@ -132,7 +138,7 @@ public class Rice {
     public String displayList() {
         loadSavedTasks();
         if (tasks.size() == 0) {
-            return "There are no tasks.";
+            return "There are no tasks. Our bowl is empty :(";
         }
         return showTasks();
     }
@@ -174,15 +180,21 @@ public class Rice {
         return switch (response) {
             case "I'm sorry, but I dont know what that means :-("
                     -> "Try list, find, todo, deadline, event, mark, unmark, or delete.";
-            case "Please provide a keyword to search for" -> "Try: find <keyword>";
+            case "Please provide a keyword to search for", "Please provide a keyword to search for./"
+                    -> "Try: find <keyword>, e.g. find rice";
+            case "No matching tasks found. Theres no rice of that type!"
+                    -> "Try: find <keyword>, e.g. find rice";
             case "Task number is required" -> "Try: mark <number>, unmark <number>, or delete <number>";
             case "Invalid task number" -> "Use a task number from the list";
             case "Task number must be a number" -> "Replace the task number with a number, e.g. delete 1";
             case "Task description cannot be empty" -> "Add a description after the command";
-            case "Use: deadline description /by yyyy-MM-dd" -> "Try: deadline <description> /by <YYYY-MM-DD>";
-            case "Use: event description /from date /to date" -> "Try: event <description> /from <YYYY-MM-DD>"
-                    + " /to <YYYY-MM-DD>";
-            default -> response.startsWith("Invalid date.")
+            case "Use: deadline description /by yyyy-MM-dd",
+                    "Use: deadline description /by yyyy-MM-dd."
+                    -> "Try: deadline <description> /by <YYYY-MM-DD>";
+            case "Use: event description /from date /to date",
+                    "Use: event description /from date /to date."
+                    -> "Try: event <description> /from <YYYY-MM-DD> /to <YYYY-MM-DD>";
+            default -> response != null && response.startsWith("Invalid date.")
                     ? "Use the date format yyyy-MM-DD, e.g. 2026-12-12"
                     : null;
         };
