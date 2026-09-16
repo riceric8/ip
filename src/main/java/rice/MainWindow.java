@@ -33,6 +33,7 @@ public class MainWindow extends AnchorPane {
     /** Injects the Duke instance */
     public void setRice(Rice r) {
         rice = r;
+        dialogContainer.getChildren().add(DialogBox.getRiceDialog(rice.displayList(), riceImage));
     }
 
     /**

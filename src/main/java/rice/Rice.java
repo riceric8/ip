@@ -130,11 +130,11 @@ public class Rice {
      * @return formatted task list
      */
     public String displayList() {
-        String list = "";
-        for (int i = 0; i < tasks.size(); i += 1) {
-            list += tasks.get(i).toString() + "\n";
+        loadSavedTasks();
+        if (tasks.size() == 0) {
+            return "There are no tasks.";
         }
-        return list;
+        return showTasks();
     }
 
     /**
