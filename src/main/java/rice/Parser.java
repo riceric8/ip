@@ -85,7 +85,7 @@ public class Parser {
             case "todo" -> new Todo(body.trim());
             case "deadline" -> createDeadline(body);
             case "event" -> createEvent(body);
-            default -> throw new RiceException("Unknown task command");
+            default -> throw new RiceException("Unknown task command, I want more rice");
         };
     }
 

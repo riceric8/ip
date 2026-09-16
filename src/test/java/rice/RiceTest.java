@@ -41,7 +41,14 @@ public class RiceTest {
         assertTrue(deleteResponse.contains("Buy rice"));
 
         String listResponse = rice.getResponse("list");
-        assertTrue(listResponse.isEmpty());
+        assertEquals("There are no tasks. Our bowl is empty :(", listResponse);
+    }
+
+    @Test
+    void getResponse_listOnEmptyTaskList_returnsEmptyListMessage() throws Exception {
+        Rice rice = createFreshRice();
+
+        assertEquals("There are no tasks. Our bowl is empty :(", rice.getResponse("list"));
     }
 
     @Test
@@ -64,7 +71,8 @@ public class RiceTest {
 
         assertEquals("Try list, find, todo, deadline, event, mark, unmark, or delete.",
                 rice.getSuggestion("I'm sorry, but I dont know what that means :-("));
-        assertEquals("Try: find <keyword>", rice.getSuggestion("Please provide a keyword to search for"));
+        assertEquals("Try: find <keyword>, e.g. find rice",
+                rice.getSuggestion("Please provide a keyword to search for"));
         assertEquals("Use the date format yyyy-MM-DD, e.g. 2026-12-12",
                 rice.getSuggestion("Invalid date. Use yyyy-MM-dd, for example 2026-12-12."));
     }
