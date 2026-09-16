@@ -37,7 +37,7 @@
                     <size>
                         <BackgroundSize width="100.0" height="100.0"
                                         widthAsPercentage="true" heightAsPercentage="true"
-                                        contain="true" cover="false" />
+                                        contain="false" cover="true" />
                     </size>
                 </BackgroundImage>
             </images>

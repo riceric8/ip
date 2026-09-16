@@ -24,7 +24,7 @@ public class MainWindow extends AnchorPane {
     private Rice rice;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/Student.png"));
-    private Image riceImage = new Image(this.getClass().getResourceAsStream("/images/RiceCooker.jpeg"));
+    private Image riceImage = new Image(this.getClass().getResourceAsStream("/images/RiceCooker.jpg"));
 
     @FXML
     public void initialize() {
