@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Tests the text formatting performed when tasks are saved. */
+/** Tests the text formatting performed when tasks are saved and loaded. */
 public class StorageTest {
 
     @TempDir
@@ -34,5 +34,21 @@ public class StorageTest {
                 "T|0|read book",
                 "D|1|submit report|2026-12-12",
                 "E|0|team meeting|2026-12-13|2026-12-14"), savedLines);
+    }
+
+    @Test
+    void load_existingFile_readsSavedRecords() throws Exception {
+        Path file = temporaryDirectory.resolve("tasks.txt");
+        Files.write(file, List.of(
+                "T|1|read book",
+                "D|0|submit report|2026-12-12",
+                "E|1|team meeting|2026-12-13|2026-12-14"));
+
+        Storage storage = new Storage(temporaryDirectory.toString(), "tasks.txt");
+
+        assertEquals(List.of(
+                "T|1|read book",
+                "D|0|submit report|2026-12-12",
+                "E|1|team meeting|2026-12-13|2026-12-14"), storage.load());
     }
 }

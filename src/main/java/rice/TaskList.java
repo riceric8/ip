@@ -34,7 +34,7 @@ public class TaskList {
      * @return removed task
      */
     public Task remove(int index) {
-        assert index > 0 && index < taskList.size();
+        assert index >= 0 && index < taskList.size();
         return taskList.remove(index);
     }
 
