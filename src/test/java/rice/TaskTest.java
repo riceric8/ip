@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 public class TaskTest {
 
     @Test
-    void todoTask_defaultsToIncompleteAndUsesTodoFormat() {
+    void defaultsToIncompleteAndUsesTodoFormat() {
         Todo todo = new Todo("Read book");
 
         assertEquals("Read book", todo.getTask());
@@ -23,7 +23,7 @@ public class TaskTest {
     }
 
     @Test
-    void todoTask_markAndUnmark_updateCompletionState() {
+    void markAndUnmarkUpdateCompletionState() {
         Todo todo = new Todo("Read book");
 
         todo.mark();
@@ -36,7 +36,7 @@ public class TaskTest {
     }
 
     @Test
-    void deadlineTask_parsesDeadlineAndFormatsOutput() {
+    void parsesDeadlineAndFormatsOutput() {
         Deadline deadline = new Deadline("Submit report", "2026-12-12");
 
         assertEquals("2026-12-12", deadline.getDeadline());
@@ -48,7 +48,7 @@ public class TaskTest {
     }
 
     @Test
-    void eventTask_tracksStartAndEndDatesAndFormatsOutput() {
+    void tracksStartAndEndDatesAndFormatsOutput() {
         Event event = new Event("Team meeting", "2026-12-13", "2026-12-14");
 
         assertEquals("2026-12-13", event.getStart());
@@ -58,16 +58,16 @@ public class TaskTest {
     }
 
     @Test
-    void taskList_sorting_ordersByDeadlineAndKeepsTodoItemsLast() {
+    void taskListChronologicalPlacement() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Read book"));
         tasks.add(new Deadline("Submit assignment", "2026-12-01"));
         tasks.add(new Event("Attend meeting", "2026-12-10", "2026-12-12"));
         tasks.add(new Todo("Buy rice"));
 
-        assertEquals("Submit assignment", tasks.get(0).getTask());
-        assertEquals("Attend meeting", tasks.get(1).getTask());
-        assertEquals("Read book", tasks.get(2).getTask());
+        assertEquals("Read book", tasks.get(0).getTask());
+        assertEquals("Submit assignment", tasks.get(1).getTask());
+        assertEquals("Attend meeting", tasks.get(2).getTask());
         assertEquals("Buy rice", tasks.get(3).getTask());
     }
 }

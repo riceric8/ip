@@ -13,27 +13,27 @@ import org.junit.jupiter.api.Test;
 public class ParserTest {
 
     @Test
-    void parseDate_validIsoDate_returnsExpectedLocalDate() {
+    void parseDateValidIsoDateReturnsExpectedLocalDate() {
         assertEquals(LocalDate.of(2026, 12, 12), Parser.parseDate("2026-12-12"));
     }
 
     @Test
-    void parseDate_singleDigitMonthOrDay_throwsException() {
+    void parseDateSingleDigitMonthOrDayThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> Parser.parseDate("2026-2-3"));
     }
 
     @Test
-    void parseDate_wrongDateFormat_throwsException() {
+    void parseDateWrongDateFormatThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> Parser.parseDate("12/12/2026"));
     }
 
     @Test
-    void parseDate_dateWithWhitespace_returnsExpectedLocalDate() {
+    void parseDateTateWithWhitespaceReturnsExpectedLocalDate() {
         assertEquals(LocalDate.of(2026, 12, 12), Parser.parseDate(" 2026-12-12 "));
     }
 
     @Test
-    void parseTasks_validAndInvalidRecords_returnsOnlyValidTasks() {
+    void parseTasksValidAndInvalidRecordsReturnsOnlyValidTasks() {
         Parser parser = new Parser();
 
         List<Task> tasks = parser.parseTasks(List.of(
@@ -52,7 +52,7 @@ public class ParserTest {
     }
 
     @Test
-    void createTask_validCommands_buildExpectedTaskTypes() throws RiceException {
+    void createTaskValidCommandsBuildExpectedTaskTypes() throws RiceException {
         Parser parser = new Parser();
 
         assertEquals("todo task", parser.createTask("todo todo task").getTask());
@@ -69,14 +69,14 @@ public class ParserTest {
     }
 
     @Test
-    void createTask_unknownCommand_throwsException() {
+    void createTaskUnknownCommandThrowsException() {
         Parser parser = new Parser();
 
         assertThrows(RiceException.class, () -> parser.createTask("random task"));
     }
 
     @Test
-    void formatDate_formatsAsExpected() {
+    void formatDateFormatsAsExpected() {
         assertEquals("Dec 12 2026", Parser.formatDate(LocalDate.of(2026, 12, 12)));
     }
 }

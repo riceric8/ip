@@ -16,7 +16,7 @@ public class StorageTest {
     Path temporaryDirectory;
 
     @Test
-    void save_allTaskTypes_writesExpectedDelimitedRecords() throws Exception {
+    void saveallTaskTypesWritesExpectedDelimitedRecords() throws Exception {
         Storage storage = new Storage(temporaryDirectory.toString(), "tasks.txt");
 
         Todo todo = new Todo("read book");
@@ -37,7 +37,7 @@ public class StorageTest {
     }
 
     @Test
-    void load_existingFile_readsSavedRecords() throws Exception {
+    void loadExistingFileReadsSavedRecords() throws Exception {
         Path file = temporaryDirectory.resolve("tasks.txt");
         Files.write(file, List.of(
                 "T|1|read book",

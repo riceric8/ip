@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 public class TaskListTest {
 
     @Test
-    void find_matchingKeyword_returnsMatchingTasksIgnoringCase() {
+    void findMatchingKeywordReturnsMatchingTasksIgnoringCase() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Buy rice"));
         tasks.add(new Todo("Read book"));
@@ -24,7 +24,7 @@ public class TaskListTest {
     }
 
     @Test
-    void find_keywordNotFound_returnsEmptyList() {
+    void findKeywordNotFoundReturnsEmptyList() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Buy rice"));
 
@@ -32,11 +32,12 @@ public class TaskListTest {
     }
 
     @Test
-    void add_tasksWithDifferentDeadlines_sortsByDeadlineAndPlacesTodosLast() {
+    void addTasksWithDifferentDeadlinesSortsByDeadlineAndPlacesTodosLast() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Read book"));
         tasks.add(new Event("Attend meeting", "2026-12-10", "2026-12-12"));
         tasks.add(new Deadline("Submit assignment", "2026-12-01"));
+        tasks.sortTasks();
 
         assertEquals("Submit assignment", tasks.get(0).getTask());
         assertEquals("Attend meeting", tasks.get(1).getTask());
@@ -44,7 +45,7 @@ public class TaskListTest {
     }
 
     @Test
-    void remove_firstTask_removesAtZeroIndex() {
+    void removeFirstTaskRemovesAtZeroIndex() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Buy rice"));
         tasks.add(new Todo("Read book"));
@@ -57,7 +58,7 @@ public class TaskListTest {
     }
 
     @Test
-    void markAndUnmark_changesCompletionState() {
+    void markAndUnmarkChangesCompletionState() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Read book"));
 
@@ -69,12 +70,13 @@ public class TaskListTest {
     }
 
     @Test
-    void addAll_addsAndSortsAllTasks() {
+    void addAllAndSortsAllTasks() {
         TaskList tasks = new TaskList();
         tasks.addAll(List.of(
                 new Todo("Read book"),
                 new Deadline("Submit assignment", "2026-12-01"),
                 new Event("Attend meeting", "2026-12-10", "2026-12-12")));
+        tasks.sortTasks();
 
         assertEquals("Submit assignment", tasks.get(0).getTask());
         assertEquals("Attend meeting", tasks.get(1).getTask());

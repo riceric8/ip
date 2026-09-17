@@ -45,12 +45,15 @@ public class Storage {
                 Files.createDirectories(parentDir);
             }
 
-            List<String> convertedTaskStrings = new ArrayList<>();
+            StringBuilder content = new StringBuilder();
             for (Task task : currentTasks) {
-                convertedTaskStrings.add(taskToListString(task));
+                if (!content.isEmpty()) {
+                    content.append(System.lineSeparator());
+                }
+                content.append(taskToListString(task));
             }
 
-            Files.write(this.filePath, convertedTaskStrings, StandardOpenOption.CREATE,
+            Files.writeString(this.filePath, content.toString(), StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             System.err.println("Failed to load: " + e.getMessage());

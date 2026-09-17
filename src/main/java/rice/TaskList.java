@@ -24,7 +24,6 @@ public class TaskList {
      */
     public void add(Task task) {
         taskList.add(task);
-        sortTasks();
     }
 
     /**
@@ -74,7 +73,6 @@ public class TaskList {
      */
     public void addAll(List<Task> tasks) {
         taskList.addAll(tasks);
-        sortTasks();
     }
 
     /**

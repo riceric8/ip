@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -16,7 +18,7 @@ public class RiceTest {
     Path temporaryDirectory;
 
     @Test
-    void getResponse_addTodoAndList_returnsTaskInformation() throws Exception {
+    void getResponseAddTodoAndListReturnsTaskInformation() throws Exception {
         Rice rice = createFreshRice();
 
         String addResponse = rice.getResponse("todo Read book");
@@ -28,7 +30,7 @@ public class RiceTest {
     }
 
     @Test
-    void getResponse_markAndDelete_updatesTaskState() throws Exception {
+    void getResponseMarkAndDeleteUpdatesTaskState() throws Exception {
         Rice rice = createFreshRice();
         rice.getResponse("todo Buy rice");
 
@@ -45,7 +47,7 @@ public class RiceTest {
     }
 
     @Test
-    void getResponse_unmark_task_setsTaskBackToIncomplete() throws Exception {
+    void getResponseUnmarkTaskSetsTaskBackToIncomplete() throws Exception {
         Rice rice = createFreshRice();
         rice.getResponse("todo Buy rice");
         rice.getResponse("mark 1");
@@ -56,14 +58,14 @@ public class RiceTest {
     }
 
     @Test
-    void getResponse_listOnEmptyTaskList_returnsEmptyListMessage() throws Exception {
+    void getResponseListOnEmptyTaskListReturnsEmptyListMessage() throws Exception {
         Rice rice = createFreshRice();
 
         assertEquals("There are no tasks. Our bowl is empty :(", rice.getResponse("list"));
     }
 
     @Test
-    void getResponse_findAndUnknownCommand_produceExpectedOutputs() throws Exception {
+    void getResponseFindAndUnknownCommandProduceExpectedOutputs() throws Exception {
         Rice rice = createFreshRice();
         rice.getResponse("todo Read book");
         rice.getResponse("todo Buy rice");
@@ -77,10 +79,41 @@ public class RiceTest {
     }
 
     @Test
-    void getSuggestion_returnsMatchingAdviceForErrors() throws Exception {
+    void getResponseSortCommandOrdersTasksByDeadline() throws Exception {
         Rice rice = createFreshRice();
 
-        assertEquals("Try list, find, todo, deadline, event, mark, unmark, or delete.",
+        rice.getResponse("deadline Return book /by 2026-12-20");
+        rice.getResponse("deadline Submit report /by 2026-12-10");
+
+        String sortResponse = rice.getResponse("sort");
+        assertTrue(sortResponse.contains("Sorted tasks by deadline."));
+
+        String listResponse = rice.getResponse("list");
+        assertTrue(listResponse.indexOf("Submit report") < listResponse.indexOf("Return book"));
+    }
+
+    @Test
+    void getResponseSortCommandSavesSortedOrderToStorage() throws Exception {
+        Rice rice = createFreshRice();
+
+        rice.getResponse("deadline Return book /by 2026-12-20");
+        rice.getResponse("deadline Submit report /by 2026-12-10");
+
+        String sortResponse = rice.getResponse("sort");
+        assertEquals("Sorted tasks by deadline.", sortResponse);
+
+        Storage storage = (Storage) getField(rice, "storage");
+        List<String> savedLines = Files.readAllLines(storage.getPath());
+        assertEquals(List.of(
+                "D|0|Submit report|2026-12-10",
+                "D|0|Return book|2026-12-20"), savedLines);
+    }
+
+    @Test
+    void getSuggestionReturnsMatchingAdviceForErrors() throws Exception {
+        Rice rice = createFreshRice();
+
+        assertEquals("Try list, find, sort, todo, deadline, event, mark, unmark, or delete.",
                 rice.getSuggestion("I'm sorry, but I dont know what that means :-("));
         assertEquals("Try: find <keyword>, e.g. find rice",
                 rice.getSuggestion("Please provide a keyword to search for"));
@@ -100,5 +133,11 @@ public class RiceTest {
         Field field = Rice.class.getDeclaredField(fieldName);
         field.setAccessible(true);
         field.set(target, value);
+    }
+
+    private static Object getField(Object target, String fieldName) throws Exception {
+        Field field = Rice.class.getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return field.get(target);
     }
 }

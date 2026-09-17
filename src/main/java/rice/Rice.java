@@ -30,6 +30,7 @@ public class Rice {
                 switch (parts[0]) {
                     case "list" -> ui.show(showTasks());
                     case "find" -> ui.show(findTasks(input));
+                    case "sort" -> ui.show(sortTasks());
                     case "todo", "deadline", "event" -> ui.show(addTask(input));
                     case "mark", "unmark" -> ui.show(changeStatus(parts[0], input));
                     case "delete" -> ui.show(deleteTask(input));
@@ -61,6 +62,12 @@ public class Rice {
             response.append("Our bowl is filled :)");
         }
         return response.toString().trim();
+    }
+
+    private String sortTasks() {
+        tasks.sortTasks();
+        storage.save(tasks.getTasks());
+        return "Sorted tasks by deadline.";
     }
 
     private String findTasks(String input) throws RiceException {
@@ -160,6 +167,7 @@ public class Rice {
             return switch (parts[0]) {
                 case "list" -> showTasks();
                 case "find" -> findTasks(trimmedInput);
+                case "sort" -> sortTasks();
                 case "todo", "deadline", "event" -> addTask(trimmedInput);
                 case "mark", "unmark" -> changeStatus(parts[0], trimmedInput);
                 case "delete" -> deleteTask(trimmedInput);
@@ -182,7 +190,7 @@ public class Rice {
         }
 
         if (isUnknownCommand(response)) {
-            return "Try list, find, todo, deadline, event, mark, unmark, or delete.";
+            return "Try list, find, sort, todo, deadline, event, mark, unmark, or delete.";
         }
         if (isFindError(response)) {
             return "Try: find <keyword>, e.g. find rice";
