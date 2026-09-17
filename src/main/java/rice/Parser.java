@@ -22,26 +22,45 @@ public class Parser {
     public List<Task> parseTasks(List<String> lines) {
         List<Task> result = new ArrayList<>();
         for (String line : lines) {
-            String[] fields = line.split("\\|", -1);
-            Task task;
-            try {
-                task = switch (fields[0]) {
-                    case "T" -> fields.length == 3 ? new Todo(fields[2]) : null;
-                    case "D" -> fields.length == 4 ? new Deadline(fields[2], fields[3]) : null;
-                    case "E" -> fields.length == 5 ? new Event(fields[2], fields[3], fields[4]) : null;
-                    default -> null;
-                };
-            } catch (IllegalArgumentException e) {
-                task = null;
+            if (line == null || line.isBlank()) {
+                continue;
             }
+
+            Task task = parseStoredTask(line);
             if (task != null) {
-                if (fields[1].equals("1")) {
-                    task.mark();
-                }
                 result.add(task);
             }
         }
         return result;
+    }
+
+    /**
+     * Parses one saved task record and skips malformed entries.
+     *
+     * @param line saved task record
+     * @return parsed task, or null if the record is malformed
+     */
+    private Task parseStoredTask(String line) {
+        String[] fields = line.split("\\|", -1);
+        if (fields.length < 3) {
+            return null;
+        }
+
+        try {
+            Task task = switch (fields[0]) {
+                case "T" -> fields.length == 3 ? new Todo(fields[2]) : null;
+                case "D" -> fields.length == 4 ? new Deadline(fields[2], fields[3]) : null;
+                case "E" -> fields.length == 5 ? new Event(fields[2], fields[3], fields[4]) : null;
+                default -> null;
+            };
+
+            if (task != null && "1".equals(fields[1])) {
+                task.mark();
+            }
+            return task;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**
