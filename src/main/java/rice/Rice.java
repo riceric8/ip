@@ -173,31 +173,76 @@ public class Rice {
     /**
      * Returns a correction suggestion for an error response, if one applies.
      *
-     * @param response response returned by {@link #getResponse(String)}
+     * @param response response returned by { getResponse(String)}
      * @return correction suggestion, or null when the response is not an error
      */
     public String getSuggestion(String response) {
-        return switch (response) {
-            case "I'm sorry, but I dont know what that means :-("
-                    -> "Try list, find, todo, deadline, event, mark, unmark, or delete.";
-            case "Please provide a keyword to search for", "Please provide a keyword to search for./"
-                    -> "Try: find <keyword>, e.g. find rice";
-            case "No matching tasks found. Theres no rice of that type!"
-                    -> "Try: find <keyword>, e.g. find rice";
-            case "Task number is required" -> "Try: mark <number>, unmark <number>, or delete <number>";
-            case "Invalid task number" -> "Use a task number from the list";
-            case "Task number must be a number" -> "Replace the task number with a number, e.g. delete 1";
-            case "Task description cannot be empty" -> "Add a description after the command";
-            case "Use: deadline description /by yyyy-MM-dd",
-                    "Use: deadline description /by yyyy-MM-dd."
-                    -> "Try: deadline <description> /by <YYYY-MM-DD>";
-            case "Use: event description /from date /to date",
-                    "Use: event description /from date /to date."
-                    -> "Try: event <description> /from <YYYY-MM-DD> /to <YYYY-MM-DD>";
-            default -> response != null && response.startsWith("Invalid date.")
-                    ? "Use the date format yyyy-MM-DD, e.g. 2026-12-12"
-                    : null;
-        };
+        if (response == null) {
+            return null;
+        }
+
+        if (isUnknownCommand(response)) {
+            return "Try list, find, todo, deadline, event, mark, unmark, or delete.";
+        }
+        if (isFindError(response)) {
+            return "Try: find <keyword>, e.g. find rice";
+        }
+        if (isTaskNumberError(response)) {
+            return getTaskNumberSuggestion(response);
+        }
+        if (isEmptyDescriptionError(response)) {
+            return "Add a description after the command";
+        }
+        if (isDeadlineError(response)) {
+            return "Try: deadline <description> /by <YYYY-MM-DD>";
+        }
+        if (isEventError(response)) {
+            return "Try: event <description> /from <YYYY-MM-DD> /to <YYYY-MM-DD>";
+        }
+        if (response.startsWith("Invalid date.")) {
+            return "Use the date format yyyy-MM-DD, e.g. 2026-12-12";
+        }
+        return null;
+    }
+
+    private boolean isUnknownCommand(String response) {
+        return "I'm sorry, but I dont know what that means :-(".equals(response);
+    }
+
+    private boolean isFindError(String response) {
+        return "Please provide a keyword to search for".equals(response)
+                || "Please provide a keyword to search for./".equals(response)
+                || "No matching tasks found. Theres no rice of that type!".equals(response);
+    }
+
+    private boolean isTaskNumberError(String response) {
+        return "Task number is required".equals(response)
+                || "Invalid task number".equals(response)
+                || "Task number must be a number".equals(response);
+    }
+
+    private String getTaskNumberSuggestion(String response) {
+        if ("Task number is required".equals(response)) {
+            return "Try: mark <number>, unmark <number>, or delete <number>";
+        }
+        if ("Invalid task number".equals(response)) {
+            return "Use a task number from the list";
+        }
+        return "Replace the task number with a number, e.g. delete 1";
+    }
+
+    private boolean isEmptyDescriptionError(String response) {
+        return "Task description cannot be empty".equals(response);
+    }
+
+    private boolean isDeadlineError(String response) {
+        return "Use: deadline description /by yyyy-MM-dd".equals(response)
+                || "Use: deadline description /by yyyy-MM-dd.".equals(response);
+    }
+
+    private boolean isEventError(String response) {
+        return "Use: event description /from date /to date".equals(response)
+                || "Use: event description /from date /to date.".equals(response);
     }
 
     public static void main(String[] args) {
