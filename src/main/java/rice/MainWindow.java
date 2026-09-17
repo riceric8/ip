@@ -26,12 +26,19 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/Student.png"));
     private Image riceImage = new Image(this.getClass().getResourceAsStream("/images/RiceCooker.jpg"));
 
+    /**
+     * Initialises the chat window and keeps the scroll view pinned to the latest message.
+     */
     @FXML
     public void initialize() {
         dialogContainer.heightProperty().addListener(observable -> Platform.runLater(() -> scrollPane.setVvalue(1.0)));
     }
 
-    /** Injects the Rice instance */
+    /**
+     * Injects the Rice application instance and displays the initial greeting.
+     *
+     * @param r the Rice application logic to use
+     */
     public void setRice(Rice r) {
         rice = r;
         dialogContainer.getChildren().add(DialogBox.getRiceDialog(rice.displayList(), riceImage));

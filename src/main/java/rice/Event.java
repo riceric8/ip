@@ -22,19 +22,39 @@ public class Event extends Task {
         this.end = Parser.parseDate(end);
     }
 
+    /**
+     * Returns the event start date.
+     *
+     * @return the start date in yyyy-MM-dd format
+     */
     public String getStart() {
         return this.start.toString();
     }
 
+    /**
+     * Returns the event end date.
+     *
+     * @return the end date in yyyy-MM-dd format
+     */
     public String getEnd() {
         return this.end.toString();
     }
 
+    /**
+     * Returns the event end date so events can be ordered by their end date.
+     *
+     * @return the event end date
+     */
     @Override
     public LocalDate getDeadlineDate() {
         return this.end;
     }
 
+    /**
+     * Returns the formatted display string for the event task.
+     *
+     * @return the formatted task with a start and end date
+     */
     @Override
     public String toString() {
         return "[E]" + super.completionMarker() + " " + super.getTask() + "(from: "

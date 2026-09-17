@@ -38,15 +38,31 @@ public class TaskList {
         return taskList.remove(index);
     }
 
+    /**
+     * Returns the task at the specified zero-based index.
+     *
+     * @param index index of the task to retrieve
+     * @return task at the given index
+     */
     public Task get(int index) {
         assert index >= 0 && index < taskList.size();
         return taskList.get(index);
     }
 
+    /**
+     * Returns the number of tasks currently in the list.
+     *
+     * @return current number of tasks
+     */
     public int size() {
         return taskList.size();
     }
 
+    /**
+     * Returns the internal list of tasks.
+     *
+     * @return all tasks currently stored
+     */
     public List<Task> getTasks() {
         return taskList;
     }

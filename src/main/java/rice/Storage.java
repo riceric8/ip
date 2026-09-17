@@ -24,6 +24,11 @@ public class Storage {
         this.filePath = Paths.get(pathElements[0], Arrays.copyOfRange(pathElements, 1, pathElements.length));
     }
 
+    /**
+     * Returns the path used to store task data.
+     *
+     * @return storage file path
+     */
     public Path getPath() {
         return this.filePath;
     }
@@ -54,6 +59,9 @@ public class Storage {
 
     /**
      * Converts one task into the delimiter-separated storage format.
+     *
+     * @param task task to convert
+     * @return storage string for the task
      */
     private String taskToListString(Task task) {
         String completion = task.isDone() ? "1" : "0";

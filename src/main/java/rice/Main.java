@@ -16,6 +16,11 @@ public class Main extends Application {
 
     private Rice rice = new Rice();
 
+    /**
+     * Starts the JavaFX application and shows the main scene.
+     *
+     * @param stage the primary stage for the application
+     */
     @Override
     public void start(Stage stage) {
         try {
