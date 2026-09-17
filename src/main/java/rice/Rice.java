@@ -64,7 +64,10 @@ public class Rice {
         return response.toString().trim();
     }
 
-    private String sortTasks() {
+    private String sortTasks() throws RiceException {
+        if (tasks.size() == 0) {
+            throw new RiceException("There are no tasks. Our bowl is empty :(");
+        }
         tasks.sortTasks();
         storage.save(tasks.getTasks());
         return "Sorted tasks by deadline.";

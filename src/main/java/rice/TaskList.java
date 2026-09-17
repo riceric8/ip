@@ -111,6 +111,9 @@ public class TaskList {
      * Sorts tasks by their deadline, placing tasks without a deadline last.
      */
     public void sortTasks() {
+        if (this.size() == 0) {
+            return;
+        }
         taskList.sort(Comparator.comparing(Task::getDeadlineDate));
     }
 }

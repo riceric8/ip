@@ -65,6 +65,13 @@ public class RiceTest {
     }
 
     @Test
+    void getResponseSortOnEmptyTaskListReturnsEmptyListMessage() throws Exception {
+        Rice rice = createFreshRice();
+
+        assertEquals("There are no tasks. Our bowl is empty :(", rice.getResponse("sort"));
+    }
+
+    @Test
     void getResponseFindAndUnknownCommandProduceExpectedOutputs() throws Exception {
         Rice rice = createFreshRice();
         rice.getResponse("todo Read book");
