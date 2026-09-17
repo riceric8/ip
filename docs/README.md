@@ -4,9 +4,14 @@ Rice is a task-management chatbot that helps you keep track of your to-dos, dead
 
 ## Quick start
 
-1. Open the Rice application.
-2. Type a command in the input box and press Enter.
-3. View the response and continue managing your tasks.
+1. Download the release v0.2
+2. Open up terminal and navigate to the directory storing "ricebot.jar"
+3. Run 
+```
+java -jar "ricebot.jar"
+```
+3. Type a command in the input box and press Enter.
+4. View the response and continue managing your tasks.
 
 ![Image of UI](Ui.png)
 
