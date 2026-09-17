@@ -24,6 +24,7 @@ Here are some commands you can try:
 - `mark 1` - marks the first task as done
 - `delete 2` - removes the second task
 - `bye` - exits the application
+- `sort` - sorts tasks by deadline
 
 ## Features
 
@@ -139,9 +140,14 @@ Expected outcome:
 
 Rice displays any matching tasks that contain the keyword.
 
-### Feature Sorting tasks
+### Sorting tasks: `sort`
 
-Rice automatically sorts tasks by their date when needed, ensuring tasks with deadlines appear in a sensible order.
+Sorts your task list by its deadline in chronological order from earliest to latest
+
+Format: `sort`
+
+
+Rice will sorts tasks by their date when needed, ensuring tasks with deadlines appear in decreasing order of urgency
 
 ### Feature Adjustable chat window
 
