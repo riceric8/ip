@@ -8,6 +8,7 @@ Rice is a task-management chatbot that helps you keep track of your to-dos, dead
 2. Type a command in the input box and press Enter.
 3. View the response and continue managing your tasks.
 
+//Image of UI placed here
 ![Image of UI](Ui.png)
 
 Here are some commands you can try:
