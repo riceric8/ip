@@ -38,23 +38,34 @@ public class MainWindow extends AnchorPane {
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Rice's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Reads a user command, processes it, and shows the appropriate response or correction dialog.
      */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText();
+        if (input == null || input.isBlank()) {
+            return;
+        }
+
         String response = rice.getResponse(input);
         String suggestion = rice.getSuggestion(response);
         if (suggestion == null) {
-            dialogContainer.getChildren().addAll(
-                    DialogBox.getUserDialog(input, userImage),
-                    DialogBox.getRiceDialog(response, riceImage));
+            showNormalResponse(input, response);
         } else {
-            dialogContainer.getChildren().addAll(
-                    DialogBox.getErrorDialog(response, input, riceImage),
-                    DialogBox.getSuggestionDialog(suggestion, riceImage));
+            showErrorResponse(input, response, suggestion);
         }
         userInput.clear();
+    }
+
+    private void showNormalResponse(String input, String response) {
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(input, userImage),
+                DialogBox.getRiceDialog(response, riceImage));
+    }
+
+    private void showErrorResponse(String input, String response, String suggestion) {
+        dialogContainer.getChildren().addAll(
+                DialogBox.getErrorDialog(response, input, riceImage),
+                DialogBox.getSuggestionDialog(suggestion, riceImage));
     }
 }
