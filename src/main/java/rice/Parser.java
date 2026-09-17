@@ -95,17 +95,36 @@ public class Parser {
      * @throws RiceException if the command is missing required details
      */
     public Task createTask(String input) throws RiceException {
-        String[] parts = input.split(" ", 2);
-        if (parts.length < 2 || parts[1].isBlank()) {
-            throw new RiceException("Task description cannot be empty");
-        }
-        String body = parts[1];
-        return switch (parts[0]) {
-            case "todo" -> new Todo(body.trim());
+        String[] commandParts = splitCommand(input);
+        validateDescription(commandParts[1]);
+
+        String command = commandParts[0];
+        String body = commandParts[1];
+
+        return switch (command) {
+            case "todo" -> createTodo(body);
             case "deadline" -> createDeadline(body);
             case "event" -> createEvent(body);
             default -> throw new RiceException("Unknown task command, I want more rice");
         };
+    }
+
+    private String[] splitCommand(String input) throws RiceException {
+        String[] parts = input.split(" ", 2);
+        if (parts.length < 2) {
+            throw new RiceException("Task description cannot be empty");
+        }
+        return parts;
+    }
+
+    private void validateDescription(String description) throws RiceException {
+        if (description == null || description.isBlank()) {
+            throw new RiceException("Task description cannot be empty");
+        }
+    }
+
+    private Task createTodo(String body) {
+        return new Todo(body.trim());
     }
 
     /**
@@ -116,7 +135,9 @@ public class Parser {
         if (parts.length != 2 || !parts[1].trim().startsWith("by ")) {
             throw new RiceException("Use: deadline description /by yyyy-MM-dd");
         }
-        return new Deadline(parts[0].trim(), parts[1].trim().substring(3).trim());
+        String description = parts[0].trim();
+        String dueDate = parts[1].trim().substring(3).trim();
+        return new Deadline(description, dueDate);
     }
 
     /**
@@ -127,6 +148,9 @@ public class Parser {
         if (parts.length != 3 || !parts[1].trim().startsWith("from ") || !parts[2].trim().startsWith("to ")) {
             throw new RiceException("Use: event description /from date /to date");
         }
-        return new Event(parts[0].trim(), parts[1].trim().substring(5).trim(), parts[2].trim().substring(3).trim());
+        String description = parts[0].trim();
+        String startDate = parts[1].trim().substring(5).trim();
+        String endDate = parts[2].trim().substring(3).trim();
+        return new Event(description, startDate, endDate);
     }
 }
