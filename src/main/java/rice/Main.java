@@ -25,7 +25,7 @@ public class Main extends Application {
             stage.setResizable(true);
             stage.setMinWidth(300.0);
             stage.setMinHeight(400.0);
-            fxmlLoader.<MainWindow>getController().setRice(rice); // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setRice(rice);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
